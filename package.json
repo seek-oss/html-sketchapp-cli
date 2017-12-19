@@ -43,7 +43,7 @@
     "child-process-promise": "^2.2.1",
     "eslint": "^4.13.1",
     "eslint-config-sku": "^1.2.1",
-    "jest": "^21.2.1",
+    "jest": "^22.0.1",
     "rimraf": "^2.6.2",
     "traverse": "^0.6.6",
     "webpack": "^3.10.0"
