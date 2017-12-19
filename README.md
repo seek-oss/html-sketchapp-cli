@@ -1,3 +1,5 @@
+[![Build Status](https://img.shields.io/travis/seek-oss/html-sketchapp-cli/master.svg?style=flat-square)](http://travis-ci.org/seek-oss/html-sketchapp-cli) [![npm](https://img.shields.io/npm/v/html-sketchapp-cli.svg?style=flat-square)](https://www.npmjs.com/package/html-sketchapp-cli)
+
 # html-sketchapp-cli
 
 Quickly generate [Sketch libraries](https://www.sketchapp.com/docs/libraries/) from HTML documents and living style guides, powered by [html-sketchapp](https://github.com/brainly/html-sketchapp).
