@@ -1,0 +1,51 @@
+{
+  "name": "html-sketchapp-cli",
+  "version": "0.0.0",
+  "description": "Quickly generate Sketch libraries from HTML documents and living style guides, powered by html-sketchapp",
+  "main": "index.js",
+  "engines": {
+    "node": ">=7.6"
+  },
+  "bin": {
+    "html-sketchapp": "bin/cli.js"
+  },
+  "scripts": {
+    "lint": "eslint bin script/src test",
+    "build": "webpack --config script/src/webpack.config.js",
+    "test": "npm run lint && npm run build && jest",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seek-oss/html-sketchapp-cli.git"
+  },
+  "author": "SEEK",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seek-oss/html-sketchapp-cli/issues"
+  },
+  "homepage": "https://github.com/seek-oss/html-sketchapp-cli#readme",
+  "dependencies": {
+    "es6-promisify": "^5.0.0",
+    "find-up": "^2.1.0",
+    "get-installed-path": "^4.0.8",
+    "get-port": "^3.2.0",
+    "html-sketchapp": "github:brainly/html-sketchapp#8f92196695497c722ecbd1a5081833e4c7267d46",
+    "mkdirp": "^0.5.1",
+    "opn": "^5.1.0",
+    "puppeteer": "^0.13.0",
+    "serve": "^6.4.1",
+    "url-join": "^2.0.2",
+    "wait-on": "^2.0.2",
+    "yargs": "^10.0.3"
+  },
+  "devDependencies": {
+    "child-process-promise": "^2.2.1",
+    "eslint": "^4.13.1",
+    "eslint-config-sku": "^1.2.1",
+    "jest": "^21.2.1",
+    "rimraf": "^2.6.2",
+    "traverse": "^0.6.6",
+    "webpack": "^3.10.0"
+  }
+}

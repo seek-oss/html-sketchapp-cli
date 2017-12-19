@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      .symbol { color: white; margin: 10px; padding: 10px; }
+      h1, h2, h3 { margin: 10px; }
+
+      @media screen and (max-width: 740px) {
+        .symbol.one { background: pink; }
+        .symbol.two { background: palegreen; }
+        .symbol.three { background: aqua; }
+
+        h1 { font-size: 40px }
+        h2 { font-size: 30px }
+        h3 { font-size: 20px }
+      }
+      @media screen and (min-width: 741px) {
+        .symbol.one { background: red; }
+        .symbol.two { background: green; }
+        .symbol.three { background: blue; }
+
+        h1 { font-size: 50px }
+        h2 { font-size: 40px }
+        h3 { font-size: 30px }
+      }
+    </style>
+  </head>
+  <body>
+    <div data-sketch-symbol="Symbol 1"><div class="symbol one">Symbol 1</div></div>
+    <div data-sketch-symbol="Symbol 2"><div class="symbol two">Symbol 2</div></div>
+    <div data-sketch-symbol="Symbol 3"><div class="symbol three">Symbol 3</div></div>
+
+    <div data-sketch-text="Text 1"><h1>Text 1</h1></div>
+    <div data-sketch-text="Text 2"><h2>Text 2</h2></div>
+    <div data-sketch-text="Text 3"><h3>Text 3</h3></div>
+  </body>
+</html>
