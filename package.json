@@ -1,6 +1,6 @@
 {
   "name": "html-sketchapp-cli",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "description": "Quickly generate Sketch libraries from HTML documents and living style guides, powered by html-sketchapp",
   "main": "index.js",
   "engines": {
@@ -13,11 +13,19 @@
     "lint": "eslint bin script/src test",
     "build": "webpack --config script/src/webpack.config.js",
     "test": "npm run lint && npm run build && jest",
-    "prepublishOnly": "npm run build"
+    "commit": "git-cz",
+    "commitmsg": "commitlint -e",
+    "prepublishOnly": "npm run build",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/seek-oss/html-sketchapp-cli.git"
+    "url": "https://github.com/seek-oss/html-sketchapp-cli.git"
   },
   "author": "SEEK",
   "license": "MIT",
@@ -40,11 +48,16 @@
     "yargs": "^10.0.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^5.2.5",
+    "@commitlint/config-angular": "^5.1.1",
     "child-process-promise": "^2.2.1",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.13.1",
     "eslint-config-sku": "^1.2.1",
+    "husky": "^0.14.3",
     "jest": "^22.0.1",
     "rimraf": "^2.6.2",
+    "semantic-release": "^8.2.0",
     "traverse": "^0.6.6",
     "webpack": "^3.10.0"
   }
