@@ -22,6 +22,11 @@ const makeServer = (relativePath, port) => {
   return serve(servePath, { port, silent: true });
 };
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at:', p, 'reason:', reason);
+// application specific logging, throwing an error, or other logic here
+});
+
 require('yargs')
   .config(config)
   .config('config', 'Path to JavaScript config file', customConfigPath => require(customConfigPath))
