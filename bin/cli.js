@@ -23,8 +23,7 @@ const makeServer = (relativePath, port) => {
 };
 
 process.on('unhandledRejection', (reason, p) => {
-  console.log('Unhandled Rejection at:', p, 'reason:', reason);
-// application specific logging, throwing an error, or other logic here
+  console.error('Unhandled Rejection at:', p, 'reason:', reason); // eslint no-console: ["error", { allow: ["error"] }]
 });
 
 require('yargs')
