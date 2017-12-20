@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint no-console: ["error", { allow: ["error"] }] */
 
 const urlJoin = require('url-join');
 const findUp = require('find-up');
@@ -23,7 +24,7 @@ const makeServer = (relativePath, port) => {
 };
 
 process.on('unhandledRejection', (reason, p) => {
-  console.error('Unhandled Rejection at:', p, 'reason:', reason); // eslint no-console: ["error", { allow: ["error"] }]
+  console.error('Unhandled Rejection at:', p, 'reason:', reason);
 });
 
 require('yargs')
