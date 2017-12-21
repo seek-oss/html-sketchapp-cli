@@ -36,7 +36,6 @@
   "dependencies": {
     "es6-promisify": "^5.0.0",
     "find-up": "^2.1.0",
-    "get-installed-path": "^4.0.8",
     "get-port": "^3.2.0",
     "html-sketchapp": "github:brainly/html-sketchapp#413c5a16c9f9f74bab9228f8bf1532d32676f628",
     "mkdirp": "^0.5.1",

@@ -108,9 +108,8 @@ require('yargs')
       }
     }
   })
-  .command('install', 'Install the html-sketchapp Sketch plugin', {}, async () => {
-    const { getInstalledPath } = require('get-installed-path');
-    const htmlSketchappPath = await getInstalledPath('html-sketchapp');
+  .command('install', 'Install the html-sketchapp Sketch plugin', {}, () => {
+    const htmlSketchappPath = path.dirname(require.resolve('html-sketchapp/package.json'));
     const pluginPath = path.resolve(htmlSketchappPath, 'asketch2sketch.sketchplugin');
 
     const opn = require('opn');
