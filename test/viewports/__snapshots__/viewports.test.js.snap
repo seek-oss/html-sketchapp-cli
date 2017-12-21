@@ -319,6 +319,11 @@ Object {
                   "thickness": 0,
                 },
               ],
+              "contextSettings": Object {
+                "_class": "graphicsContextSettings",
+                "blendMode": 0,
+                "opacity": "1",
+              },
               "endDecorationType": 0,
               "fills": Array [
                 Object {
@@ -589,6 +594,11 @@ Object {
                   "thickness": 0,
                 },
               ],
+              "contextSettings": Object {
+                "_class": "graphicsContextSettings",
+                "blendMode": 0,
+                "opacity": "1",
+              },
               "endDecorationType": 0,
               "fills": Array [
                 Object {
@@ -859,6 +869,11 @@ Object {
                   "thickness": 0,
                 },
               ],
+              "contextSettings": Object {
+                "_class": "graphicsContextSettings",
+                "blendMode": 0,
+                "opacity": "1",
+              },
               "endDecorationType": 0,
               "fills": Array [
                 Object {
@@ -1129,6 +1144,11 @@ Object {
                   "thickness": 0,
                 },
               ],
+              "contextSettings": Object {
+                "_class": "graphicsContextSettings",
+                "blendMode": 0,
+                "opacity": "1",
+              },
               "endDecorationType": 0,
               "fills": Array [
                 Object {
@@ -1399,6 +1419,11 @@ Object {
                   "thickness": 0,
                 },
               ],
+              "contextSettings": Object {
+                "_class": "graphicsContextSettings",
+                "blendMode": 0,
+                "opacity": "1",
+              },
               "endDecorationType": 0,
               "fills": Array [
                 Object {
@@ -1669,6 +1694,11 @@ Object {
                   "thickness": 0,
                 },
               ],
+              "contextSettings": Object {
+                "_class": "graphicsContextSettings",
+                "blendMode": 0,
+                "opacity": "1",
+              },
               "endDecorationType": 0,
               "fills": Array [
                 Object {
