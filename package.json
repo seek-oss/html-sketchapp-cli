@@ -37,7 +37,7 @@
     "es6-promisify": "^5.0.0",
     "find-up": "^2.1.0",
     "get-port": "^3.2.0",
-    "html-sketchapp": "github:brainly/html-sketchapp#8f92196695497c722ecbd1a5081833e4c7267d46",
+    "html-sketchapp": "github:brainly/html-sketchapp#413c5a16c9f9f74bab9228f8bf1532d32676f628",
     "mkdirp": "^0.5.1",
     "opn": "^5.1.0",
     "puppeteer": "^0.13.0",
