@@ -134,6 +134,10 @@ Then, open a new Sketch document and, from the menu, select `Plugins > From *Alm
 
 Congratulations! You should now have your symbols, text styles and document colors available within Sketch! 💎🎉
 
+## Contributing
+
+Refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
+
 ## License
 
 MIT.
