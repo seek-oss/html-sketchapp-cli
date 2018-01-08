@@ -14,7 +14,7 @@
     "build": "webpack --config script/src/webpack.config.js",
     "test": "npm run lint && npm run build && jest",
     "commit": "git-cz",
-    "commitmsg": "commitlint -e",
+    "commitmsg": "commitlint --edit --extends seek",
     "prepublishOnly": "npm run build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
@@ -48,9 +48,9 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^5.2.5",
-    "@commitlint/config-conventional": "^5.2.3",
     "child-process-promise": "^2.2.1",
     "commitizen": "^2.9.6",
+    "commitlint-config-seek": "^1.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.13.1",
     "eslint-config-sku": "^1.2.1",
