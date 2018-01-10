@@ -49,63 +49,74 @@ require('yargs')
       describe: 'Set of named viewport sizes for symbols, e.g. --viewports.Desktop=1024x768 --viewports.Mobile=320x568'
     }
   }, async argv => {
-    const port = argv.serve ? await getPort() : null;
-    const server = argv.serve ? makeServer(argv.serve, port) : null;
-
     try {
-      const url = argv.file ? `file://${path.join(process.cwd(), argv.file)}` : argv.url;
-      const symbolsUrl = argv.serve ? urlJoin(`http://localhost:${String(port)}`, argv.url || '/') : url;
-      await waitOn({ resources: [symbolsUrl] });
-
-      const browser = await puppeteer.launch();
+      const port = argv.serve ? await getPort() : null;
+      const server = argv.serve ? makeServer(argv.serve, port) : null;
 
       try {
-        const page = await browser.newPage();
+        const url = argv.file ? `file://${path.join(process.cwd(), argv.file)}` : argv.url;
+        const symbolsUrl = argv.serve ? urlJoin(`http://localhost:${String(port)}`, argv.url || '/') : url;
 
-        await page.goto(symbolsUrl, { waitUntil: 'networkidle0' });
+        await waitOn({
+          timeout: 10 * 500,
+          headers: { accept: 'text/html' },
+          // Force 'wait-on' to make a GET request rather than a HEAD request
+          resources: [symbolsUrl.replace(/^(https?)/, '$1-get')],
+        });
 
-        const bundlePath = path.resolve(__dirname, '../script/dist/generateAlmostSketch.bundle.js');
-        const bundle = await readFileAsync(bundlePath, 'utf8');
-        await page.addScriptTag({ content: bundle });
+        const browser = await puppeteer.launch();
 
-        await page.evaluate('generateAlmostSketch.setupSymbols({ name: "html-sketchapp symbols" })');
+        try {
+          const page = await browser.newPage();
 
-        await page.evaluate('generateAlmostSketch.snapshotColorStyles()');
+          await page.goto(symbolsUrl, { waitUntil: 'networkidle0' });
 
-        const viewports = argv.viewports || { Desktop: '1024x768' };
-        const hasViewports = Object.keys(viewports).length > 1;
-        for (const viewportName in viewports) {
-          if (viewports.hasOwnProperty(viewportName)) {
-            const viewport = viewports[viewportName];
-            const [ width, height ] = viewport.split('x').map(x => parseInt(x, 10));
-            await page.setViewport({ width, height });
-            await page.evaluate(`generateAlmostSketch.snapshotTextStyles({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
-            await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
+          const bundlePath = path.resolve(__dirname, '../script/dist/generateAlmostSketch.bundle.js');
+          const bundle = await readFileAsync(bundlePath, 'utf8');
+          await page.addScriptTag({ content: bundle });
+
+          await page.evaluate('generateAlmostSketch.setupSymbols({ name: "html-sketchapp symbols" })');
+
+          await page.evaluate('generateAlmostSketch.snapshotColorStyles()');
+
+          const viewports = argv.viewports || { Desktop: '1024x768' };
+          const hasViewports = Object.keys(viewports).length > 1;
+          for (const viewportName in viewports) {
+            if (viewports.hasOwnProperty(viewportName)) {
+              const viewport = viewports[viewportName];
+              const [ width, height ] = viewport.split('x').map(x => parseInt(x, 10));
+              await page.setViewport({ width, height });
+              await page.evaluate(`generateAlmostSketch.snapshotTextStyles({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
+              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
+            }
+          }
+
+          const asketchDocumentJSON = await page.evaluate('generateAlmostSketch.getDocumentJSON()');
+          const asketchPageJSON = await page.evaluate('generateAlmostSketch.getPageJSON()');
+
+          const outputPath = path.resolve(process.cwd(), argv.outDir);
+          await mkdirp(outputPath);
+
+          const outputPagePath = path.join(outputPath, 'page.asketch.json');
+          const outputDocumentPath = path.join(outputPath, 'document.asketch.json');
+
+          await Promise.all([
+            writeFileAsync(outputPagePath, asketchPageJSON),
+            writeFileAsync(outputDocumentPath, asketchDocumentJSON)
+          ]);
+        } finally {
+          if (browser && typeof browser.close === 'function') {
+            browser.close();
           }
         }
-
-        const asketchDocumentJSON = await page.evaluate('generateAlmostSketch.getDocumentJSON()');
-        const asketchPageJSON = await page.evaluate('generateAlmostSketch.getPageJSON()');
-
-        const outputPath = path.resolve(process.cwd(), argv.outDir);
-        await mkdirp(outputPath);
-
-        const outputPagePath = path.join(outputPath, 'page.asketch.json');
-        const outputDocumentPath = path.join(outputPath, 'document.asketch.json');
-
-        await Promise.all([
-          writeFileAsync(outputPagePath, asketchPageJSON),
-          writeFileAsync(outputDocumentPath, asketchDocumentJSON)
-        ]);
       } finally {
-        if (browser && typeof browser.close === 'function') {
-          browser.close();
+        if (server && typeof server.stop === 'function') {
+          server.stop();
         }
       }
-    } finally {
-      if (server && typeof server.stop === 'function') {
-        server.stop();
-      }
+    } catch (err) {
+      console.error(err);
+      process.exit(1);
     }
   })
   .command('install', 'Install the html-sketchapp Sketch plugin', {}, () => {
