@@ -2,7 +2,7 @@
 
 # html-sketchapp-cli
 
-Quickly generate [Sketch libraries](https://www.sketchapp.com/docs/libraries/) from HTML documents and living style guides, powered by [html-sketchapp](https://github.com/brainly/html-sketchapp).
+Quickly generate [Sketch libraries](https://www.sketchapp.com/docs/libraries/) from HTML documents and living style guides, powered by [html-sketchapp](https://github.com/brainly/html-sketchapp) and [Puppeteer](https://github.com/GoogleChrome/puppeteer).
 
 Add some simple markup to your page, for example:
 
@@ -96,6 +96,20 @@ $ html-sketchapp --viewports.Desktop 1024x768 --viewports.Mobile 320x568 --file 
 
 If multiple screen sizes are provided, the viewport name will be being appended to all symbol and text style names. For example, `Button/Primary` will be exported as `Button/Primary/Desktop` and `Button/Primary/Mobile`.
 
+### Puppeteer args
+
+If you need to provide command line arguments to the browser instance via [Puppeteer](https://github.com/GoogleChrome/puppeteer), you can provide the `puppeteer-args` option.
+
+Since Puppeteer uses [Chromium](https://www.chromium.org/Home) internally, you can refer to the [List of Chromium Command Line Switches](https://peter.sh/experiments/chromium-command-line-switches) for available options.
+
+For example, if you'd like to disable the browser sandbox:
+
+```bash
+$ html-sketchapp --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --file sketch.html --out-dir dist
+```
+
+*Note: Because Puppeteer args are prefixed with hyphens, you **must** use an equals sign and quotes when providing this option via the command line (as seen above).*
+
 ### Config file
 
 All options can be provided via an `html-sketchapp.config.js` file.
@@ -107,7 +121,8 @@ module.exports = {
   viewports: {
     Desktop: '1024x768',
     Mobile: '320x568'
-  }
+  },
+  puppeteerArgs: '--no-sandbox --disable-setuid-sandbox'
 };
 ```
 

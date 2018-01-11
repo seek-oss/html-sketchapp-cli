@@ -11,6 +11,7 @@ beforeEach(() => rimrafAsync(distPath));
 test('viewports', async () => {
   await exec([
     'node ../../bin/cli',
+    '--puppeteer-args="--no-sandbox --disable-setuid-sandbox"',
     '--out-dir dist',
     '--file index.html',
     '--viewports.Desktop 1024x768',

@@ -9,7 +9,7 @@ const distPath = path.join(__dirname, 'dist');
 beforeEach(() => rimrafAsync(distPath));
 
 test('serve', async () => {
-  await exec('node ../../bin/cli --out-dir dist --serve serve-me', { cwd: __dirname });
+  await exec('node ../../bin/cli --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --out-dir dist --serve serve-me', { cwd: __dirname });
 
   const output = await dirContentsToObject(distPath);
   expect(output).toMatchSnapshot();
