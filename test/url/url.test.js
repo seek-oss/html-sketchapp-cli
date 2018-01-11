@@ -15,7 +15,7 @@ test('url', async () => {
   const port = await getPort();
   const server = serve(servePath, { port, silent: true })
 
-  await exec(`node ../../bin/cli --out-dir dist --url http://localhost:${port}`, { cwd: __dirname });
+  await exec(`node ../../bin/cli --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --out-dir dist --url http://localhost:${port}`, { cwd: __dirname });
 
   server.stop();
 

@@ -47,6 +47,10 @@ require('yargs')
     'viewports': {
       alias: 'v',
       describe: 'Set of named viewport sizes for symbols, e.g. --viewports.Desktop=1024x768 --viewports.Mobile=320x568'
+    },
+    'puppeteer-args': {
+      type: 'string',
+      describe: 'Set of command line arguments to be provided to the Chromium instance via Puppeteer, e.g. --puppeteer-args="--no-sandbox --disable-setuid-sandbox"'
     }
   }, async argv => {
     const port = argv.serve ? await getPort() : null;
@@ -57,7 +61,7 @@ require('yargs')
       const symbolsUrl = argv.serve ? urlJoin(`http://localhost:${String(port)}`, argv.url || '/') : url;
       await waitOn({ resources: [symbolsUrl] });
 
-      const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({ args: argv.puppeteerArgs ? argv.puppeteerArgs.split(' ') : [] });
 
       try {
         const page = await browser.newPage();
