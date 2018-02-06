@@ -2,7 +2,7 @@
 
 const urlJoin = require('url-join');
 const findUp = require('find-up');
-const promisify = require('es6-promisify');
+const { promisify } = require('es6-promisify');
 const getPort = require('get-port');
 const serve = require('serve');
 const puppeteer = require('puppeteer');
