@@ -1,4 +1,4 @@
-const promisify = require('es6-promisify');
+const { promisify } = require('es6-promisify');
 const rimrafAsync = promisify(require('rimraf'));
 const path = require('path');
 const { exec } = require('child-process-promise');

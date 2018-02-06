@@ -16,7 +16,7 @@
     "commit": "git-cz",
     "commitmsg": "commitlint --edit --extends seek",
     "prepublishOnly": "npm run build",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release"
   },
   "config": {
     "commitizen": {
@@ -34,20 +34,20 @@
   },
   "homepage": "https://github.com/seek-oss/html-sketchapp-cli#readme",
   "dependencies": {
-    "es6-promisify": "^5.0.0",
+    "es6-promisify": "^6.0.0",
     "find-up": "^2.1.0",
     "get-port": "^3.2.0",
-    "html-sketchapp": "github:brainly/html-sketchapp#413c5a16c9f9f74bab9228f8bf1532d32676f628",
+    "html-sketchapp": "github:brainly/html-sketchapp#49f1d0ea3e239608af0b8f7c0b6240e3a6a331e2",
     "mkdirp": "^0.5.1",
     "opn": "^5.1.0",
-    "puppeteer": "^0.13.0",
-    "serve": "^6.4.1",
-    "url-join": "^2.0.2",
+    "puppeteer": "^1.0.0",
+    "serve": "^6.4.9",
+    "url-join": "^4.0.0",
     "wait-on": "^2.1.0",
-    "yargs": "^10.0.3"
+    "yargs": "^11.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^5.2.5",
+    "@commitlint/cli": "^6.1.0",
     "child-process-promise": "^2.2.1",
     "commitizen": "^2.9.6",
     "commitlint-config-seek": "^1.0.0",
@@ -57,7 +57,7 @@
     "husky": "^0.14.3",
     "jest": "^22.0.1",
     "rimraf": "^2.6.2",
-    "semantic-release": "^8.2.0",
+    "semantic-release": "^12.4.1",
     "traverse": "^0.6.6",
     "webpack": "^3.10.0"
   }

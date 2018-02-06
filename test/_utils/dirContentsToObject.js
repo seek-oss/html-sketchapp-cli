@@ -1,4 +1,4 @@
-const promisify = require('es6-promisify');
+const { promisify } = require('es6-promisify');
 const path = require('path');
 const readFileAsync = promisify(require('fs').readFile);
 const traverse = require('traverse');
