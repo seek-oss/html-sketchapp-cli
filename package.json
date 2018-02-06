@@ -16,6 +16,7 @@
     "commit": "git-cz",
     "commitmsg": "commitlint --edit --extends seek",
     "prepublishOnly": "npm run build",
+    "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
   },
   "config": {
@@ -59,6 +60,7 @@
     "rimraf": "^2.6.2",
     "semantic-release": "^12.4.1",
     "traverse": "^0.6.6",
+    "travis-deploy-once": "^4.3.4",
     "webpack": "^3.10.0"
   }
 }
