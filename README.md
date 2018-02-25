@@ -110,6 +110,14 @@ $ html-sketchapp --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --file
 
 *Note: Because Puppeteer args are prefixed with hyphens, you **must** use an equals sign and quotes when providing this option via the command line (as seen above).*
 
+### Chromium executable
+
+If you'd like to override the Chromium used by Puppeteer, you can provide a path to the executable with the `puppeteer-executable-path` option.
+
+```bash
+$ html-sketchapp --puppeteer-executable-path google-chrome-unstable --file sketch.html --out-dir dist
+```
+
 ### Config file
 
 All options can be provided via an `html-sketchapp.config.js` file.
@@ -122,7 +130,8 @@ module.exports = {
     Desktop: '1024x768',
     Mobile: '320x568'
   },
-  puppeteerArgs: '--no-sandbox --disable-setuid-sandbox'
+  puppeteerArgs: '--no-sandbox --disable-setuid-sandbox',
+  puppeteerExecutablePath: 'google-chrome-unstable'
 };
 ```
 

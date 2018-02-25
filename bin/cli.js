@@ -51,6 +51,10 @@ require('yargs')
     'puppeteer-args': {
       type: 'string',
       describe: 'Set of command line arguments to be provided to the Chromium instance via Puppeteer, e.g. --puppeteer-args="--no-sandbox --disable-setuid-sandbox"'
+    },
+    'puppeteer-executable-path': {
+      type: 'string',
+      describe: 'Path to a Chromium executable to use instead of the one downloaded by Puppeteer.'
     }
   }, async argv => {
     try {
@@ -68,7 +72,11 @@ require('yargs')
           resources: [symbolsUrl.replace(/^(https?)/, '$1-get')],
         });
 
-        const browser = await puppeteer.launch({ args: argv.puppeteerArgs ? argv.puppeteerArgs.split(' ') : [] });
+        const launchArgs = {
+            args: argv.puppeteerArgs ? argv.puppeteerArgs.split(' ') : [],
+            executablePath: argv.puppeteerExecutablePath,
+        };
+        const browser = await puppeteer.launch(launchArgs);
 
         try {
           const page = await browser.newPage();
