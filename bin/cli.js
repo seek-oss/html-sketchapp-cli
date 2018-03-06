@@ -96,8 +96,10 @@ require('yargs')
           for (const viewportName in viewports) {
             if (viewports.hasOwnProperty(viewportName)) {
               const viewport = viewports[viewportName];
-              const [ width, height ] = viewport.split('x').map(x => parseInt(x, 10));
-              await page.setViewport({ width, height });
+              const [ size, scale ] = viewport.split('@');
+              const [ width, height ] = size.split('x').map(x => parseInt(x, 10));
+              const deviceScaleFactor = typeof scale === 'undefined' ? 1 : parseFloat(scale);
+              await page.setViewport({ width, height, deviceScaleFactor });
               await page.evaluate(`generateAlmostSketch.snapshotTextStyles({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
               await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
             }
