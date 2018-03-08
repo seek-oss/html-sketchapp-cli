@@ -35,10 +35,10 @@
   },
   "homepage": "https://github.com/seek-oss/html-sketchapp-cli#readme",
   "dependencies": {
+    "@brainly/html-sketchapp": "^1.0.0",
     "es6-promisify": "^6.0.0",
     "find-up": "^2.1.0",
     "get-port": "^3.2.0",
-    "html-sketchapp": "github:brainly/html-sketchapp#49f1d0ea3e239608af0b8f7c0b6240e3a6a331e2",
     "mkdirp": "^0.5.1",
     "opn": "^5.1.0",
     "puppeteer": "^1.0.0",
