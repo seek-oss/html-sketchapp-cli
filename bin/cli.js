@@ -132,7 +132,7 @@ require('yargs')
     }
   })
   .command('install', 'Install the html-sketchapp Sketch plugin', {}, () => {
-    const htmlSketchappPath = path.dirname(require.resolve('html-sketchapp/package.json'));
+    const htmlSketchappPath = path.dirname(require.resolve('@brainly/html-sketchapp/package.json'));
     const pluginPath = path.resolve(htmlSketchappPath, 'asketch2sketch.sketchplugin');
 
     const opn = require('opn');
