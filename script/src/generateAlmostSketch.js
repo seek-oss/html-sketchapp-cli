@@ -1,8 +1,8 @@
-import Page from 'html-sketchapp/html2asketch/page.js';
-import Document from 'html-sketchapp/html2asketch/document.js';
-import Text from 'html-sketchapp/html2asketch/text.js';
-import SymbolMaster from 'html-sketchapp/html2asketch/symbolMaster.js';
-import nodeToSketchLayers from 'html-sketchapp/html2asketch/nodeToSketchLayers.js';
+import Page from '@brainly/html-sketchapp/html2asketch/page.js';
+import Document from '@brainly/html-sketchapp/html2asketch/document.js';
+import Text from '@brainly/html-sketchapp/html2asketch/text.js';
+import SymbolMaster from '@brainly/html-sketchapp/html2asketch/symbolMaster.js';
+import nodeToSketchLayers from '@brainly/html-sketchapp/html2asketch/nodeToSketchLayers.js';
 
 const getAllLayers = async item => {
   const itemAndChildren = [item, ...item.querySelectorAll('*')];
