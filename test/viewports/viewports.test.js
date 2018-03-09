@@ -15,7 +15,8 @@ test('viewports', async () => {
     '--out-dir dist',
     '--file index.html',
     '--viewports.Desktop 1024x768',
-    '--viewports.Mobile 320x568'
+    '--viewports.Mobile 320x568',
+    '--viewports.Retina 1024x768@2',
   ].join(' '), { cwd: __dirname });
 
   const output = await dirContentsToObject(distPath);
