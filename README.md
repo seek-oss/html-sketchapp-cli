@@ -42,6 +42,20 @@ Annotate symbols with `data-sketch-symbol` attributes. Note that forward slashes
 </div>
 ```
 
+Annotate [nested symbols](https://www.sketchapp.com/docs/symbols/nested-symbols) with `data-sketch-symbol-instance` attributes, where the attribute values reference existing symbols defined elsewhere in the document.
+
+```html
+<div data-sketch-symbol="Icon/Reply">...</div>
+<div data-sketch-symbol="Icon/Retweet">...</div>
+<div data-sketch-symbol="Icon/Like">...</div>
+
+<div data-sketch-symbol="IconRow">
+  <div data-sketch-symbol-instance="Icon/Reply">...</div>
+  <div data-sketch-symbol-instance="Icon/Retweet">...</div>
+  <div data-sketch-symbol-instance="Icon/Like">...</div>
+</div>
+```
+
 Annotate all text styles with `data-sketch-text` attributes.
 
 ```html
