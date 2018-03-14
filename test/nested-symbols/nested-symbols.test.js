@@ -8,21 +8,6 @@ const distPath = path.join(__dirname, 'dist');
 
 beforeEach(() => rimrafAsync(distPath));
 
-test('generates symbolInstance nodes', async () => {
-  await exec(
-    [
-      'node ../../bin/cli',
-      '--puppeteer-args="--no-sandbox --disable-setuid-sandbox"',
-      '--out-dir dist',
-      '--file index.html'
-    ].join(' '),
-    { cwd: __dirname }
-  );
-
-  const output = await dirContentsToObject(distPath);
-  expect(output).toMatchSnapshot();
-});
-
 test('fails when referencing unknown Symbol', (done) => {
   exec(
     [
@@ -33,7 +18,24 @@ test('fails when referencing unknown Symbol', (done) => {
     ].join(' '),
     { cwd: __dirname }
   ).catch(err => {
-      expect(err.stderr).toMatch('Unknown symbol master: Some Symbol');
-      done();
+    expect(err.stderr).toMatch('Unknown symbol master: Some Symbol');
+    done();
   });
+});
+
+test('generates symbolInstance nodes', async () => {
+  await exec(
+    [
+      'node ../../bin/cli',
+      '--puppeteer-args="--no-sandbox --disable-setuid-sandbox"',
+      '--out-dir dist',
+      '--file index.html',
+      '--viewports.Desktop 1024x768',
+      '--viewports.Mobile 320x568'
+    ].join(' '),
+    { cwd: __dirname }
+  );
+
+  const output = await dirContentsToObject(distPath);
+  expect(output).toMatchSnapshot();
 });
