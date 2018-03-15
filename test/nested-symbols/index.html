@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      [data-sketch-symbol='Item/A'] { background: pink; color: red; }
+      [data-sketch-symbol='Item/B'] { background: aqua; color: blue; }
+
+      @media screen and (min-width: 740px) {
+        [data-sketch-symbol='Item/A'] { background: red; color: pink; }
+        [data-sketch-symbol='Item/B'] { background: blue; color: aqua; }
+      }
+    </style>
+  </head>
+  <body>
+    <div data-sketch-symbol="Item/A"><div>A</div></div>
+    <div data-sketch-symbol="Item/B"><div>B</div></div>
+
+    <div data-sketch-symbol="Container">
+      <div>
+        <div data-sketch-symbol-instance="Item/A"><div>A</div></div>
+        <div data-sketch-symbol-instance="Item/B"><div>B</div></div>
+      </div>
+    </div>
+  </body>
+</html>
