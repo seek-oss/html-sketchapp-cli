@@ -110,6 +110,14 @@ $ html-sketchapp --viewports.Desktop 1024x768 --viewports.Mobile 320x568 --file 
 
 If multiple screen sizes are provided, the viewport name will be being appended to all symbol and text style names. For example, `Button/Primary` will be exported as `Button/Primary/Desktop` and `Button/Primary/Mobile`.
 
+Optionally, you can set the pixel density for a given viewport by adding an `@` followed by the desired scaling factor to the end of the viewport's resolution. For example, you can simulate a 1.5x and 2x display like so:
+
+```bash
+$ html-sketchapp --viewports.HigherDensity 1024x768@1.5 --viewports.Retina 1024x768@2 --file sketch.html --out-dir dist
+```
+
+If no scaling factor is provided, a default of `1` will be used.
+
 ### Puppeteer args
 
 If you need to provide command line arguments to the browser instance via [Puppeteer](https://github.com/GoogleChrome/puppeteer), you can provide the `puppeteer-args` option.
