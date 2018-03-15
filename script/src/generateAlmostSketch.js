@@ -7,33 +7,32 @@ import SymbolMaster from '@brainly/html-sketchapp/html2asketch/symbolMaster.js';
 const getAllLayers = async (item, symbolMastersByName = {}) => {
   const itemAndChildren = [item, ...item.querySelectorAll('*')];
 
-  const symbolInstances = new Set([
-    ...item.querySelectorAll('[data-sketch-symbol-instance]')
-  ]);
   const symbolInstanceChildren = new Set([
     ...item.querySelectorAll('[data-sketch-symbol-instance] *')
   ]);
 
   const layerPromises = Array.from(itemAndChildren).map(node => {
-    if (symbolInstances.has(node)) {
+    if (node.dataset.sketchSymbolInstance) {
       const symbolName = node.dataset.sketchSymbolInstance;
-      const { left: x, top: y, width, height } = node.getBoundingClientRect();
+
       if (!(symbolName in symbolMastersByName)) {
-          throw new Error(`Unknown symbol master: ${symbolName}`);
+        throw new Error(`Unknown symbol master: ${symbolName}`);
       }
+
       const symbolMaster = symbolMastersByName[symbolName];
-      const symbolInstance = symbolMaster.getSymbolInstance({
-        x,
-        y,
-        width,
-        height
-      });
+
+      const { left: x, top: y, width, height } = node.getBoundingClientRect();
+      const symbolInstance = symbolMaster.getSymbolInstance({ x, y, width, height });
+
       symbolInstance.setName(symbolName);
+
       return [symbolInstance];
     } else if (symbolInstanceChildren.has(node)) {
-      // anything nested under data-sketch-symbol-instance shouldn't be rendered, because it'll be including in the symbolInstance itself.
+      // Anything nested under data-sketch-symbol-instance shouldn't be rendered,
+      // otherwise it'll be included in the symbolInstance itself.
       return [];
     }
+
     return nodeToSketchLayers(node);
   });
 
@@ -85,18 +84,21 @@ export function setupSymbols({ name }) {
 export async function snapshotSymbols({ suffix = '' }) {
   const nodes = Array.from(document.querySelectorAll('[data-sketch-symbol]'));
 
-  const symbolMastersByName = {};
-  nodes.forEach(item => {
+  const symbolMastersByName = nodes.reduce((obj, item) => {
     const name = item.dataset.sketchSymbol;
     const { left: x, top: y } = item.getBoundingClientRect();
+
     const symbol = new SymbolMaster({ x, y });
-    symbolMastersByName[name] = symbol;
-  });
+    symbol.setName(`${name}${suffix}`);
+
+    obj[name] = symbol;
+
+    return obj;
+  }, {});
 
   const symbolPromises = nodes.map(async item => {
     const name = item.dataset.sketchSymbol;
     const symbol = symbolMastersByName[name];
-    symbol.setName(`${name}${suffix}`);
 
     const layers = await getAllLayers(item, symbolMastersByName);
 
