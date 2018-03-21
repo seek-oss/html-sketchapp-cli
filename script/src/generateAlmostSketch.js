@@ -4,14 +4,14 @@ import Text from '@brainly/html-sketchapp/html2asketch/text.js';
 import nodeToSketchLayers from '@brainly/html-sketchapp/html2asketch/nodeToSketchLayers.js';
 import SymbolMaster from '@brainly/html-sketchapp/html2asketch/symbolMaster.js';
 
-const getAllLayers = async (item, symbolMastersByName = {}) => {
+const getAllLayers = (item, symbolMastersByName = {}) => {
   const itemAndChildren = [item, ...item.querySelectorAll('*')];
 
   const symbolInstanceChildren = new Set([
     ...item.querySelectorAll('[data-sketch-symbol-instance] *')
   ]);
 
-  const layerPromises = Array.from(itemAndChildren).map(node => {
+  const layers = Array.from(itemAndChildren).map(node => {
     if (node.dataset.sketchSymbolInstance) {
       const symbolName = node.dataset.sketchSymbolInstance;
 
@@ -36,8 +36,6 @@ const getAllLayers = async (item, symbolMastersByName = {}) => {
     return nodeToSketchLayers(node);
   });
 
-  const layers = await Promise.all(layerPromises);
-
   return layers.reduce((prev, current) => prev.concat(current), []);
 };
 
@@ -52,12 +50,10 @@ export function snapshotColorStyles() {
     });
 }
 
-export async function snapshotTextStyles({ suffix = '' }) {
-  await Array.from(document.querySelectorAll('[data-sketch-text]'))
-    .forEach(async item => {
-      const layers = await getAllLayers(item);
-
-      layers
+export function snapshotTextStyles({ suffix = '' }) {
+  Array.from(document.querySelectorAll('[data-sketch-text]'))
+    .forEach(item => {
+      getAllLayers(item)
         .filter(layer => layer instanceof Text)
         .forEach(layer => {
           const name = item.dataset.sketchText;
@@ -81,7 +77,7 @@ export function setupSymbols({ name }) {
   page.setName(name);
 }
 
-export async function snapshotSymbols({ suffix = '' }) {
+export function snapshotSymbols({ suffix = '' }) {
   const nodes = Array.from(document.querySelectorAll('[data-sketch-symbol]'));
 
   const symbolMastersByName = nodes.reduce((obj, item) => {
@@ -96,11 +92,11 @@ export async function snapshotSymbols({ suffix = '' }) {
     return obj;
   }, {});
 
-  const symbolPromises = nodes.map(async item => {
+  const symbols = nodes.map(item => {
     const name = item.dataset.sketchSymbol;
     const symbol = symbolMastersByName[name];
 
-    const layers = await getAllLayers(item, symbolMastersByName);
+    const layers = getAllLayers(item, symbolMastersByName);
 
     layers
       .filter(layer => layer !== null)
@@ -108,8 +104,6 @@ export async function snapshotSymbols({ suffix = '' }) {
 
     return symbol;
   });
-
-  const symbols = await Promise.all(symbolPromises);
 
   symbols.forEach(obj => page.addLayer(obj));
 }
