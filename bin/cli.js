@@ -48,6 +48,10 @@ require('yargs')
       alias: 'v',
       describe: 'Set of named viewport sizes for symbols, e.g. --viewports.Desktop=1024x768 --viewports.Mobile=320x568'
     },
+    'debug': {
+      alias: 'd',
+      describe: 'Put into debug mode to see what the tool is doing'
+    },
     'puppeteer-args': {
       type: 'string',
       describe: 'Set of command line arguments to be provided to the Chromium instance via Puppeteer, e.g. --puppeteer-args="--no-sandbox --disable-setuid-sandbox"'
@@ -64,6 +68,7 @@ require('yargs')
       try {
         const url = argv.file ? `file://${path.join(process.cwd(), argv.file)}` : argv.url;
         const symbolsUrl = argv.serve ? urlJoin(`http://localhost:${String(port)}`, argv.url || '/') : url;
+        const debug = argv.debug;
 
         await waitOn({
           timeout: 5000,
@@ -75,11 +80,18 @@ require('yargs')
         const launchArgs = {
             args: argv.puppeteerArgs ? argv.puppeteerArgs.split(' ') : [],
             executablePath: argv.puppeteerExecutablePath,
+            headless: !debug
         };
+
         const browser = await puppeteer.launch(launchArgs);
 
         try {
           const page = await browser.newPage();
+
+          if (debug) {
+            page.bringToFront();
+            page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+          }
 
           await page.goto(symbolsUrl, { waitUntil: 'networkidle0' });
 
@@ -119,7 +131,7 @@ require('yargs')
             writeFileAsync(outputDocumentPath, asketchDocumentJSON)
           ]);
         } finally {
-          if (browser && typeof browser.close === 'function') {
+          if (browser && typeof browser.close === 'function' && !debug) {
             browser.close();
           }
         }
