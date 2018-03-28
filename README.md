@@ -118,6 +118,20 @@ $ html-sketchapp --viewports.HigherDensity 1024x768@1.5 --viewports.Retina 1024x
 
 If no scaling factor is provided, a default of `1` will be used.
 
+### Debug mode
+
+If you need to see what Puppeteer is doing, you can provide the `--debug` flag which will do the following things:
+- Turn off headless mode
+- Bring the browser window to the front
+- Forward `console` calls to the terminal
+- Stop the browser from closing until you exit the CLI tool
+
+For example:
+
+```bash
+$ html-sketchapp --url http://localhost:3000 --out-dir dist --debug
+```
+
 ### Puppeteer args
 
 If you need to provide command line arguments to the browser instance via [Puppeteer](https://github.com/GoogleChrome/puppeteer), you can provide the `puppeteer-args` option.
