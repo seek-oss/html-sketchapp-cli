@@ -6,12 +6,12 @@ const { promisify } = require('es6-promisify');
 const getPort = require('get-port');
 const serve = require('serve');
 const puppeteer = require('puppeteer');
+const { rollup } = require('rollup');
 const waitOn = promisify(require('wait-on'));
 const mkdirp = promisify(require('mkdirp'));
 const fs = require('fs');
 const path = require('path');
 
-const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
 
 const configPath = findUp.sync(['html-sketchapp.config.js']);
@@ -95,9 +95,20 @@ require('yargs')
 
           await page.goto(symbolsUrl, { waitUntil: 'networkidle0' });
 
-          const bundlePath = path.resolve(__dirname, '../script/dist/generateAlmostSketch.bundle.js');
-          const bundle = await readFileAsync(bundlePath, 'utf8');
-          await page.addScriptTag({ content: bundle });
+          const bundle = await rollup({
+            input: path.resolve(__dirname, '../script/generateAlmostSketch.js'),
+            plugins: [
+              require('rollup-plugin-node-resolve')(),
+              require('rollup-plugin-commonjs')()
+            ]
+          });
+
+          const { code } = await bundle.generate({
+            format: 'iife',
+            name: 'generateAlmostSketch'
+          });
+
+          await page.addScriptTag({ content: code });
 
           await page.evaluate('generateAlmostSketch.setupSymbols({ name: "html-sketchapp symbols" })');
 
