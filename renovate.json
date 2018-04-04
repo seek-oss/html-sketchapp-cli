@@ -2,6 +2,7 @@
   "extends": [
     "seek"
   ],
+  "pinVersions": false,
   "packageRules": [
     {
       "packageNames": ["@brainly/html-sketchapp"],
