@@ -1,8 +1,10 @@
-import Page from '@brainly/html-sketchapp/html2asketch/page.js';
-import Document from '@brainly/html-sketchapp/html2asketch/document.js';
-import Text from '@brainly/html-sketchapp/html2asketch/text.js';
+import Page from '@brainly/html-sketchapp/html2asketch/model/page.js';
+import Document from '@brainly/html-sketchapp/html2asketch/model/document.js';
+import Text from '@brainly/html-sketchapp/html2asketch/model/text.js';
+import SVG from '@brainly/html-sketchapp/html2asketch/model/svg.js';
 import nodeToSketchLayers from '@brainly/html-sketchapp/html2asketch/nodeToSketchLayers.js';
-import SymbolMaster from '@brainly/html-sketchapp/html2asketch/symbolMaster.js';
+import SymbolMaster from '@brainly/html-sketchapp/html2asketch/model/symbolMaster.js';
+import { RESIZING_CONSTRAINTS } from '@brainly/html-sketchapp/html2asketch/helpers/utils';
 
 const getAllLayers = (item, symbolMastersByName = {}) => {
   const itemAndChildren = [item, ...item.querySelectorAll('*')];
@@ -77,7 +79,7 @@ export function setupSymbols({ name }) {
   page.setName(name);
 }
 
-export function snapshotSymbols({ suffix = '' }) {
+export function snapshotSymbols({ suffix = '', symbolMiddleware = () => {} }, ) {
   const nodes = Array.from(document.querySelectorAll('[data-sketch-symbol]'));
 
   const symbolMastersByName = nodes.reduce((obj, item) => {
@@ -100,7 +102,10 @@ export function snapshotSymbols({ suffix = '' }) {
 
     layers
       .filter(layer => layer !== null)
-      .forEach(layer => symbol.addLayer(layer));
+      .forEach(layer => {
+        symbolMiddleware({layer, SVG, Text, RESIZING_CONSTRAINTS});
+        symbol.addLayer(layer)
+      });
 
     return symbol;
   });
