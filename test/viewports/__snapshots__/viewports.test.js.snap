@@ -167,8 +167,8 @@ Object {
     "frame": Object {
       "_class": "rect",
       "constrainProportions": false,
-      "height": 784,
-      "width": 351,
+      "height": 351,
+      "width": 784,
       "x": 0,
       "y": 0,
     },
