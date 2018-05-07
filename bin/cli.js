@@ -88,8 +88,16 @@ require('yargs')
 
         const browser = await puppeteer.launch(launchArgs);
 
-        // eslint-disable-next-line no-undefined
-        const symbolMiddleware = argv.symbolMiddleware ? require(path.resolve(process.cwd(), argv.symbolMiddleware)) : undefined;
+        const { symbolMiddleware: argSM } = argv;
+        let symbolMiddleware;
+
+        if (argSM) {
+          if (typeof argSM === 'string') {
+            symbolMiddleware = require(path.resolve(process.cwd(), argv.symbolMiddleware));
+          } else if (typeof argSM === 'function') {
+            symbolMiddleware = argSM;
+          }
+        }
 
         try {
           const page = await browser.newPage();
