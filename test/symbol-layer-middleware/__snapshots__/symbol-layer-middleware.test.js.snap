@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`symbol-middleware function 1`] = `
+exports[`symbol-layer-middleware function 1`] = `
 Object {
   "document.asketch.json": Object {
     "_class": "document",
@@ -970,7 +970,7 @@ Object {
 }
 `;
 
-exports[`symbol-middleware string 1`] = `
+exports[`symbol-layer-middleware string 1`] = `
 Object {
   "document.asketch.json": Object {
     "_class": "document",

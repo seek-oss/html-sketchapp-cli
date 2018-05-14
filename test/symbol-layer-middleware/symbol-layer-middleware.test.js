@@ -8,7 +8,7 @@ const distPath = path.join(__dirname, 'dist');
 
 beforeEach(() => rimrafAsync(distPath));
 
-describe('symbol-middleware', () => {
+describe('symbol-layer-middleware', () => {
   test('function', async () => {
   await exec('node ../../bin/cli', { cwd: __dirname });
 
@@ -17,7 +17,7 @@ describe('symbol-middleware', () => {
   });
 
   test('string', async () => {
-    await exec('node ../../bin/cli --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --out-dir dist --file index.html --symbol-middleware symbol.middleware.js', { cwd: __dirname });
+    await exec('node ../../bin/cli --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --out-dir dist --file index.html --symbol-layer-middleware symbol.layer.middleware.js', { cwd: __dirname });
 
     const output = await dirContentsToObject(distPath);
     expect(output).toMatchSnapshot();

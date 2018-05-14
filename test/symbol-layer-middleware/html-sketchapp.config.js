@@ -2,7 +2,7 @@ module.exports = {
   file: 'index.html',
   outDir: 'dist',
   puppeteerArgs: '--no-sandbox --disable-setuid-sandbox',
-  symbolMiddleware: (args) => {
+  symbolLayerMiddleware: (args) => {
     const { layer, RESIZING_CONSTRAINTS } = args;
 
     layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
