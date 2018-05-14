@@ -50,6 +50,9 @@ require('yargs')
       alias: 'd',
       describe: 'Put into debug mode to see what the tool is doing'
     },
+    'symbol-middleware': {
+      describe: 'Path to symbol middleware to run when looping over sketch layers'
+    },
     'puppeteer-args': {
       type: 'string',
       describe: 'Set of command line arguments to be provided to the Chromium instance via Puppeteer, e.g. --puppeteer-args="--no-sandbox --disable-setuid-sandbox"'
@@ -82,6 +85,17 @@ require('yargs')
         };
 
         const browser = await puppeteer.launch(launchArgs);
+
+        const { symbolLayerMiddleware: argSLM } = argv;
+        let symbolLayerMiddleware;
+
+        if (argSLM) {
+          if (typeof argSLM === 'string') {
+            symbolLayerMiddleware = require(path.resolve(process.cwd(), argSLM));
+          } else if (typeof argSLM === 'function') {
+            symbolLayerMiddleware = argSLM;
+          }
+        }
 
         try {
           const page = await browser.newPage();
@@ -122,7 +136,7 @@ require('yargs')
               const deviceScaleFactor = typeof scale === 'undefined' ? 1 : parseFloat(scale);
               await page.setViewport({ width, height, deviceScaleFactor });
               await page.evaluate(`generateAlmostSketch.snapshotTextStyles({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
-              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
+              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolLayerMiddleware: ${symbolLayerMiddleware} })`);
             }
           }
 

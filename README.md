@@ -132,6 +132,75 @@ For example:
 $ html-sketchapp --url http://localhost:3000 --out-dir dist --debug
 ```
 
+### Symbol Layer Middleware
+
+Symbol Layer Middleware allows you to call out to any APIs that may be exposed on the underlying html-sketchapp layer.
+
+The current usecase for this is the new `layer.setResizingConstraint` API which allows you to configure how a layer should behave when a symbol is resized.
+
+#### Requiring a file
+
+The below uses the string argument to `require` in a file that defines what resizing a layer should have applied to it. In the below case, fixing the layer to the top and left.
+
+```bash
+$ html-sketchapp --symbol-layer-middleware symbol.layer.middleware.js
+```
+
+```js
+module.exports = (args) => {
+  const { layer, RESIZING_CONSTRAINTS } = args;
+
+  layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
+};
+```
+
+#### Inline function
+
+If you use the config file you can provide an inline function and avoid creating a separate file:
+
+```bash
+$ html-sketchapp --config config.js
+```
+
+```js
+module.exports = {
+  symbolLayerMiddleware: (args) => {
+    const { layer, RESIZING_CONSTRAINTS } = args;
+
+    layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
+  }
+};
+```
+
+#### Symbol layer middleware arguments
+
+The function that is called has several arguments passed into it so you can provide different resizing options for different types of layers.
+
+The following things are passed into symbol
+- layer: the html-sketchapp layer instance
+- SVG: The SVG class for type checking of layer
+- Text: The Text class for type checking of layer
+- Rectangle: The Rectangle class for type checking of layer
+- ShapeGroup: The ShapeGroup class for type checking of layer
+- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
+
+Handling SVGs differently from other layers:
+
+```js
+module.exports = {
+  symbolLayerMiddleware: (args) => {
+    const { layer, SVG, RESIZING_CONSTRAINTS } = args;
+
+    layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
+
+    if(layer instanceof SVG) {
+      layer.setResizingConstraint(RESIZING_CONSTRAINTS.TOP, RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.WIDTH, RESIZING_CONSTRAINTS.HEIGHT);
+    }
+  }
+};
+
+```
+
 ### Puppeteer args
 
 If you need to provide command line arguments to the browser instance via [Puppeteer](https://github.com/GoogleChrome/puppeteer), you can provide the `puppeteer-args` option.

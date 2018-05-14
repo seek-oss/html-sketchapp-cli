@@ -1,11 +1,15 @@
 import htmlSketchapp from '@brainly/html-sketchapp'
+import { RESIZING_CONSTRAINTS } from '@brainly/html-sketchapp/html2asketch/helpers/utils';
 
 const {
   Page,
   Document,
   Text,
   nodeToSketchLayers,
-  SymbolMaster
+  SymbolMaster,
+  SVG,
+  Rectangle,
+  ShapeGroup
 } = htmlSketchapp;
 
 const getAllLayers = (item, symbolMastersByName = {}) => {
@@ -81,7 +85,7 @@ export function setupSymbols({ name }) {
   page.setName(name);
 }
 
-export function snapshotSymbols({ suffix = '' }) {
+export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {} }, ) {
   const nodes = Array.from(document.querySelectorAll('[data-sketch-symbol]'));
 
   const symbolMastersByName = nodes.reduce((obj, item) => {
@@ -104,7 +108,10 @@ export function snapshotSymbols({ suffix = '' }) {
 
     layers
       .filter(layer => layer !== null)
-      .forEach(layer => symbol.addLayer(layer));
+      .forEach(layer => {
+        symbolLayerMiddleware({layer, SVG, Text, ShapeGroup, Rectangle, RESIZING_CONSTRAINTS});
+        symbol.addLayer(layer);
+      });
 
     return symbol;
   });
