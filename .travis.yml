@@ -8,3 +8,6 @@ after_success:
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
+cache:
+  directories:
+    - node_modules
