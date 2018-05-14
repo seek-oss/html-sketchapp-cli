@@ -1,12 +1,16 @@
-import Page from '@brainly/html-sketchapp/html2asketch/model/page.js';
-import Document from '@brainly/html-sketchapp/html2asketch/model/document.js';
-import Text from '@brainly/html-sketchapp/html2asketch/model/text.js';
-import SVG from '@brainly/html-sketchapp/html2asketch/model/svg.js';
-import Rectangle from '@brainly/html-sketchapp/html2asketch/model/rectangle.js';
-import ShapeGroup from '@brainly/html-sketchapp/html2asketch/model/shapeGroup.js';
-import nodeToSketchLayers from '@brainly/html-sketchapp/html2asketch/nodeToSketchLayers.js';
-import SymbolMaster from '@brainly/html-sketchapp/html2asketch/model/symbolMaster.js';
+import htmlSketchapp from '@brainly/html-sketchapp'
 import { RESIZING_CONSTRAINTS } from '@brainly/html-sketchapp/html2asketch/helpers/utils';
+
+const {
+  Page,
+  Document,
+  Text,
+  nodeToSketchLayers,
+  SymbolMaster,
+  SVG,
+  Rectangle,
+  ShapeGroup
+} = htmlSketchapp;
 
 const getAllLayers = (item, symbolMastersByName = {}) => {
   const itemAndChildren = [item, ...item.querySelectorAll('*')];
