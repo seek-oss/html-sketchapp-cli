@@ -40,8 +40,8 @@ Object {
     "frame": Object {
       "_class": "rect",
       "constrainProportions": false,
-      "height": 784,
-      "width": 72,
+      "height": 72,
+      "width": 784,
       "x": 0,
       "y": 0,
     },
