@@ -7,12 +7,10 @@ const getPort = require('get-port');
 const serve = require('serve');
 const puppeteer = require('puppeteer');
 const { rollup } = require('rollup');
-const waitOn = promisify(require('wait-on'));
-const mkdirp = promisify(require('mkdirp'));
-const fs = require('fs');
+const waitOnAsync = promisify(require('wait-on'));
+const mkdirpAsync = promisify(require('mkdirp'));
+const writeFileAsync = promisify(require('fs').writeFile);
 const path = require('path');
-
-const writeFileAsync = promisify(fs.writeFile);
 
 const configPath = findUp.sync(['html-sketchapp.config.js']);
 const config = configPath ? require(configPath) : {};
@@ -70,7 +68,7 @@ require('yargs')
         const symbolsUrl = argv.serve ? urlJoin(`http://localhost:${String(port)}`, argv.url || '/') : url;
         const debug = argv.debug;
 
-        await waitOn({
+        await waitOnAsync({
           timeout: 5000,
           headers: { accept: 'text/html' },
           // Force 'wait-on' to make a GET request rather than a HEAD request
@@ -132,7 +130,7 @@ require('yargs')
           const asketchPageJSON = await page.evaluate('generateAlmostSketch.getPageJSON()');
 
           const outputPath = path.resolve(process.cwd(), argv.outDir);
-          await mkdirp(outputPath);
+          await mkdirpAsync(outputPath);
 
           const outputPagePath = path.join(outputPath, 'page.asketch.json');
           const outputDocumentPath = path.join(outputPath, 'document.asketch.json');
@@ -156,10 +154,26 @@ require('yargs')
       process.exit(1);
     }
   })
-  .command('install', 'Install the html-sketchapp Sketch plugin', {}, () => {
-    const htmlSketchappPath = path.dirname(require.resolve('@brainly/html-sketchapp/package.json'));
-    const pluginPath = path.resolve(htmlSketchappPath, 'asketch2sketch.sketchplugin');
+  .command('install', 'Install the html-sketchapp Sketch plugin', {}, async () => {
+    const { version } = require('@brainly/html-sketchapp/package.json');
+    console.log(`Detected html-sketchapp v${version}`);
 
+    const tmpDirPath = path.resolve(__dirname, '../', '.tmp');
+    const rimrafAsync = promisify(require('rimraf'));
+    await rimrafAsync(tmpDirPath);
+    await mkdirpAsync(tmpDirPath);
+
+    const releaseUrl = `http://github.com/brainly/html-sketchapp/releases/download/v${version}/asketch2sketch.sketchplugin.zip`;
+    console.log(`Downloading from ${releaseUrl}`);
+    const axios = require('axios');
+    const { data } = await axios(releaseUrl, { responseType: 'arraybuffer' });
+
+    console.log(`Extracting to ${tmpDirPath}`);
+    const decompress = require('decompress');
+    await decompress(data, tmpDirPath);
+
+    const pluginPath = path.resolve(tmpDirPath, 'asketch2sketch.sketchplugin');
+    console.log(`Installing from ${pluginPath}`);
     const opn = require('opn');
     opn(pluginPath, { wait: false });
   })

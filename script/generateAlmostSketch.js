@@ -1,8 +1,12 @@
-import Page from '@brainly/html-sketchapp/html2asketch/page.js';
-import Document from '@brainly/html-sketchapp/html2asketch/document.js';
-import Text from '@brainly/html-sketchapp/html2asketch/text.js';
-import nodeToSketchLayers from '@brainly/html-sketchapp/html2asketch/nodeToSketchLayers.js';
-import SymbolMaster from '@brainly/html-sketchapp/html2asketch/symbolMaster.js';
+import htmlSketchapp from '@brainly/html-sketchapp'
+
+const {
+  Page,
+  Document,
+  Text,
+  nodeToSketchLayers,
+  SymbolMaster
+} = htmlSketchapp;
 
 const getAllLayers = (item, symbolMastersByName = {}) => {
   const itemAndChildren = [item, ...item.querySelectorAll('*')];
