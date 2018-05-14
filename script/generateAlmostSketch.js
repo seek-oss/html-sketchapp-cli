@@ -2,6 +2,8 @@ import Page from '@brainly/html-sketchapp/html2asketch/model/page.js';
 import Document from '@brainly/html-sketchapp/html2asketch/model/document.js';
 import Text from '@brainly/html-sketchapp/html2asketch/model/text.js';
 import SVG from '@brainly/html-sketchapp/html2asketch/model/svg.js';
+import Rectangle from '@brainly/html-sketchapp/html2asketch/model/rectangle.js';
+import ShapeGroup from '@brainly/html-sketchapp/html2asketch/model/shapeGroup.js';
 import nodeToSketchLayers from '@brainly/html-sketchapp/html2asketch/nodeToSketchLayers.js';
 import SymbolMaster from '@brainly/html-sketchapp/html2asketch/model/symbolMaster.js';
 import { RESIZING_CONSTRAINTS } from '@brainly/html-sketchapp/html2asketch/helpers/utils';
@@ -79,7 +81,7 @@ export function setupSymbols({ name }) {
   page.setName(name);
 }
 
-export function snapshotSymbols({ suffix = '', symbolMiddleware = () => {} }, ) {
+export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {} }, ) {
   const nodes = Array.from(document.querySelectorAll('[data-sketch-symbol]'));
 
   const symbolMastersByName = nodes.reduce((obj, item) => {
@@ -103,8 +105,8 @@ export function snapshotSymbols({ suffix = '', symbolMiddleware = () => {} }, ) 
     layers
       .filter(layer => layer !== null)
       .forEach(layer => {
-        symbolMiddleware({layer, SVG, Text, RESIZING_CONSTRAINTS});
-        symbol.addLayer(layer)
+        symbolLayerMiddleware({layer, SVG, Text, ShapeGroup, Rectangle, RESIZING_CONSTRAINTS});
+        symbol.addLayer(layer);
       });
 
     return symbol;

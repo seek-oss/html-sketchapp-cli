@@ -88,14 +88,14 @@ require('yargs')
 
         const browser = await puppeteer.launch(launchArgs);
 
-        const { symbolMiddleware: argSM } = argv;
-        let symbolMiddleware;
+        const { symbolLayerMiddleware: argSLM } = argv;
+        let symbolLayerMiddleware;
 
-        if (argSM) {
-          if (typeof argSM === 'string') {
-            symbolMiddleware = require(path.resolve(process.cwd(), argv.symbolMiddleware));
-          } else if (typeof argSM === 'function') {
-            symbolMiddleware = argSM;
+        if (argSLM) {
+          if (typeof argSLM === 'string') {
+            symbolLayerMiddleware = require(path.resolve(process.cwd(), argSLM));
+          } else if (typeof argSLM === 'function') {
+            symbolLayerMiddleware = argSLM;
           }
         }
 
@@ -138,7 +138,7 @@ require('yargs')
               const deviceScaleFactor = typeof scale === 'undefined' ? 1 : parseFloat(scale);
               await page.setViewport({ width, height, deviceScaleFactor });
               await page.evaluate(`generateAlmostSketch.snapshotTextStyles({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
-              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolMiddleware: ${symbolMiddleware} })`);
+              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolLayerMiddleware: ${symbolLayerMiddleware} })`);
             }
           }
 

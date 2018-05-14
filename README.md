@@ -132,9 +132,9 @@ For example:
 $ html-sketchapp --url http://localhost:3000 --out-dir dist --debug
 ```
 
-### Symbol Middleware
+### Symbol Layer Middleware
 
-Symbol Middleware allows you to call out to any APIs that may be exposed on the underlying html-sketchapp layer.
+Symbol Layer Middleware allows you to call out to any APIs that may be exposed on the underlying html-sketchapp layer.
 
 The current usecase for this is the new `layer.setResizingConstraint` API which allows you to configure how a layer should behave when a symbol is resized.
 
@@ -143,7 +143,7 @@ The current usecase for this is the new `layer.setResizingConstraint` API which 
 The below uses the string argument to `require` in a file that defines what resizing a layer should have applied to it. In the below case, fixing the layer to the top and left.
 
 ```bash
-$ html-sketchapp --symbol-middleware symbol.middleware.js
+$ html-sketchapp --symbol-layer-middleware symbol.layer.middleware.js
 ```
 
 ```js
@@ -164,7 +164,7 @@ $ html-sketchapp --config config.js
 
 ```js
 module.exports = {
-  symbolMiddleware: (args) => {
+  symbolLayerMiddleware: (args) => {
     const { layer, RESIZING_CONSTRAINTS } = args;
 
     layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
@@ -172,7 +172,7 @@ module.exports = {
 };
 ```
 
-#### Symbol middleware arguments
+#### Symbol layer middleware arguments
 
 The function that is called has several arguments passed into it so you can provide different resizing options for different types of layers.
 
@@ -180,13 +180,15 @@ The following things are passed into symbol
 - layer: the html-sketchapp layer instance
 - SVG: The SVG class for type checking of layer
 - Text: The Text class for type checking of layer
+- Rectangle: The Rectangle class for type checking of layer
+- ShapeGroup: The ShapeGroup class for type checking of layer
 - RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
 
 Handling SVGs differently from other layers:
 
 ```js
 module.exports = {
-  symbolMiddleware: (args) => {
+  symbolLayerMiddleware: (args) => {
     const { layer, SVG, RESIZING_CONSTRAINTS } = args;
 
     layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
