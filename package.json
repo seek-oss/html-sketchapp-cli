@@ -22,6 +22,9 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "release": {
+    "success": false
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/seek-oss/html-sketchapp-cli.git"
