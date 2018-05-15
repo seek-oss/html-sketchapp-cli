@@ -20,6 +20,8 @@ $ html-sketchapp --file sketch.html --out-dir dist/sketch
 
 ## Install
 
+*Please note: html-sketchapp-cli targets the latest ["Active LTS" version](https://github.com/nodejs/Release#release-schedule) of Node. Older versions of Node are unsupported.*
+
 ```bash
 $ npm install --global html-sketchapp-cli
 ```
