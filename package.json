@@ -49,9 +49,8 @@
     "rollup": "^0.58.2",
     "rollup-plugin-commonjs": "^9.1.0",
     "rollup-plugin-node-resolve": "^3.3.0",
-    "serve": "^6.5.7",
+    "serve-handler": "^3.2.1",
     "url-join": "^4.0.0",
-    "wait-on": "^2.1.0",
     "yargs": "^11.0.0"
   },
   "devDependencies": {

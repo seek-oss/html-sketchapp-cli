@@ -4,10 +4,10 @@ const urlJoin = require('url-join');
 const findUp = require('find-up');
 const { promisify } = require('es6-promisify');
 const getPort = require('get-port');
-const serve = require('serve');
+const http = require('http');
+const serveHandler = require('serve-handler');
 const puppeteer = require('puppeteer');
 const { rollup } = require('rollup');
-const waitOnAsync = promisify(require('wait-on'));
 const mkdirpAsync = promisify(require('mkdirp'));
 const writeFileAsync = promisify(require('fs').writeFile);
 const path = require('path');
@@ -15,9 +15,18 @@ const path = require('path');
 const configPath = findUp.sync(['html-sketchapp.config.js']);
 const config = configPath ? require(configPath) : {};
 
-const makeServer = (relativePath, port) => {
-  const servePath = path.resolve(process.cwd(), relativePath);
-  return serve(servePath, { port, silent: true });
+const makeServer = async (relativePath, port) => {
+  const server = http.createServer((request, response) => {
+    return serveHandler(request, response, {
+      public: relativePath
+    });
+  });
+
+  await new Promise((resolve, reject) => {
+    server.listen(port, err => err ? reject(err) : resolve());
+  });
+
+  return server;
 };
 
 require('yargs')
@@ -64,19 +73,12 @@ require('yargs')
   }, async argv => {
     try {
       const port = argv.serve ? await getPort() : null;
-      const server = argv.serve ? makeServer(argv.serve, port) : null;
+      const server = argv.serve ? await makeServer(argv.serve, port) : null;
 
       try {
         const url = argv.file ? `file://${path.join(process.cwd(), argv.file)}` : argv.url;
         const symbolsUrl = argv.serve ? urlJoin(`http://localhost:${String(port)}`, argv.url || '/') : url;
         const debug = argv.debug;
-
-        await waitOnAsync({
-          timeout: 5000,
-          headers: { accept: 'text/html' },
-          // Force 'wait-on' to make a GET request rather than a HEAD request
-          resources: [symbolsUrl.replace(/^(https?)/, '$1-get')],
-        });
 
         const launchArgs = {
             args: argv.puppeteerArgs ? argv.puppeteerArgs.split(' ') : [],
@@ -159,8 +161,8 @@ require('yargs')
           }
         }
       } finally {
-        if (server && typeof server.stop === 'function') {
-          server.stop();
+        if (server && typeof server.close === 'function') {
+          server.close();
         }
       }
     } catch (err) {
