@@ -85,7 +85,7 @@ export function setupSymbols({ name }) {
   page.setName(name);
 }
 
-export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {} }, ) {
+export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {}, symbolMasterMiddleware = () => {} }, ) {
   const nodes = Array.from(document.querySelectorAll('[data-sketch-symbol]'));
 
   const symbolMastersByName = nodes.reduce((obj, item) => {
@@ -94,7 +94,7 @@ export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {} 
 
     const symbol = new SymbolMaster({ x, y });
     symbol.setName(`${name}${suffix}`);
-
+    symbolMasterMiddleware({symbol, item, suffix});
     obj[name] = symbol;
 
     return obj;

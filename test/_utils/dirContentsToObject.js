@@ -3,7 +3,7 @@ const path = require('path');
 const readFileAsync = promisify(require('fs').readFile);
 const traverse = require('traverse');
 
-module.exports = async dir => {
+module.exports = async (dir, exludedAttribRegex = /ID$/) => {
   const document = await readFileAsync(path.join(dir, 'document.asketch.json'));
   const page = await readFileAsync(path.join(dir, 'page.asketch.json'));
 
@@ -14,7 +14,7 @@ module.exports = async dir => {
 
   // Scrub out GUIDs or they'll fail the snapshot tests
   traverse(output).forEach(function() {
-    if (/ID$/.test(this.path)) {
+    if (exludedAttribRegex.test(this.path)) {
       this.update('__GUID__');
     }
   });

@@ -99,6 +99,17 @@ require('yargs')
           }
         }
 
+        const { symbolMasterMiddleware: argSMM } = argv;
+        let symbolMasterMiddleware;
+
+        if (argSMM) {
+          if (typeof argSMM === 'string') {
+            symbolMasterMiddleware = require(path.resolve(process.cwd(), argSMM));
+          } else if (typeof argSMM === 'function') {
+            symbolMasterMiddleware = argSMM;
+          }
+        }
+
         try {
           const page = await browser.newPage();
 
@@ -138,7 +149,7 @@ require('yargs')
               const deviceScaleFactor = typeof scale === 'undefined' ? 1 : parseFloat(scale);
               await page.setViewport({ width, height, deviceScaleFactor });
               await page.evaluate(`generateAlmostSketch.snapshotTextStyles({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
-              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolLayerMiddleware: ${symbolLayerMiddleware} })`);
+              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolLayerMiddleware: ${symbolLayerMiddleware}, symbolMasterMiddleware: ${symbolMasterMiddleware} })`);
             }
           }
 
