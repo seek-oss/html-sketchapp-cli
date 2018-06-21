@@ -203,6 +203,42 @@ module.exports = {
 
 ```
 
+## Symbol master middleware
+
+It is possible to define symbol master middleware either in separete file or as inline function in config file. The asketch generator calls the middleware function when looping symbol masters. 
+
+### Separate middleware file 
+
+`html-sketchapp-cli --symbol-master-middleware 'symbol-master-middleware.js'`
+
+Example symbol master middleware to set symbolID based on symbol name and suffix:
+```
+module.exports = ({ symbol, item, suffix }) => {
+    symbol.setId(`${item.dataset.sketchSymbol}${suffix}`);
+};
+```
+
+### Inline function
+
+`html-sketchapp-cli  --config config.js`
+
+Where config.js should contain following to set symbol id based on symbol name and suffix:
+```
+module.exports = {
+  symbolMasterMiddleware: ({ symbol, item, suffix }) => {
+     symbol.setId(`${item.dataset.sketchSymbol}${suffix}`);
+   }
+};
+```
+
+### Symbol master middleware arguments
+:
+The middleware function that is called has several arguments passed into it:
+
+- symbol: The symbol master to process
+- item: The item/node from html 
+- suffix: The suffix set
+
 ### Puppeteer args
 
 If you need to provide command line arguments to the browser instance via [Puppeteer](https://github.com/GoogleChrome/puppeteer), you can provide the `puppeteer-args` option.
