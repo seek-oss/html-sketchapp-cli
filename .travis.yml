@@ -13,3 +13,6 @@ branches:
     - /^v\d+\.\d+\.\d+$/
 git:
   depth: 5
+cache:
+  directories:
+    - $HOME/.npm
