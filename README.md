@@ -232,7 +232,7 @@ module.exports = {
 ```
 
 ### Symbol master middleware arguments
-:
+
 The middleware function that is called has several arguments passed into it:
 
 - symbol: The symbol master to process
