@@ -179,7 +179,8 @@ require('yargs')
     await rimrafAsync(tmpDirPath);
     await mkdirpAsync(tmpDirPath);
 
-    const releaseUrl = `http://github.com/brainly/html-sketchapp/releases/download/v${version}/asketch2sketch.sketchplugin.zip`;
+    const [ major, minor, patch ] = version.split('.');
+    const releaseUrl = `http://github.com/brainly/html-sketchapp/releases/download/v${version}/asketch2sketch-${major}-${minor}-${patch}.sketchplugin.zip`;
     console.log(`Downloading from ${releaseUrl}`);
     const axios = require('axios');
     const { data } = await axios(releaseUrl, { responseType: 'arraybuffer' });
