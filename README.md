@@ -252,7 +252,7 @@ It is possible to define symbol instance middleware either in separete file or a
 Example symbol instance middleware to set symbol instance name and resizing constraints:
 ```
 module.exports = ({ symbolInstance, node, RESIZING_CONSTRAINTS}) => {
-  symbolInstance.setName("from-config-file-" + node.dataset.sketchSymbolInstance);
+  symbolInstance.setName(`custom-prefix-${node.dataset.sketchSymbolInstance}`);
   symbolInstance.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
 };
 ```
@@ -267,7 +267,7 @@ module.exports = {
   symbolInstanceMiddleware: (args) => {
     const { symbolInstance, RESIZING_CONSTRAINTS, node } = args;
 
-    symbolInstance.setName("from-inline-function-" + node.dataset.sketchSymbolInstance);
+    symbolInstance.setName(`custom-prefix-${node.dataset.sketchSymbolInstance}`);
     symbolInstance.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
   }
 };
