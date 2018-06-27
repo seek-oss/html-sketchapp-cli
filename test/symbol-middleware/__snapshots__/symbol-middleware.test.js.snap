@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`symbol-master-middleware sets symbolId for symbol when middleware function is defined in separate config file 1`] = `
+exports[`symbol-middleware sets symbolId for symbol when middleware function is defined in separate config file 1`] = `
 Object {
   "document.asketch.json": Object {
     "_class": "document",
@@ -961,7 +961,7 @@ Object {
 }
 `;
 
-exports[`symbol-master-middleware sets symbolId for symbol when middleware function is defined inline in config file 1`] = `
+exports[`symbol-middleware sets symbolId for symbol when middleware function is defined inline in config file 1`] = `
 Object {
   "document.asketch.json": Object {
     "_class": "document",

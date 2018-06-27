@@ -8,7 +8,7 @@ const distPath = path.join(__dirname, 'dist');
 
 beforeEach(() => rimrafAsync(distPath));
 
-describe('symbol-master-middleware sets symbolId for symbol when middleware function is defined', () => {
+describe('symbol-middleware sets symbolId for symbol when middleware function is defined', () => {
   test('inline in config file', async () => {
   await exec('node ../../bin/cli', { cwd: __dirname });
 
@@ -17,7 +17,7 @@ describe('symbol-master-middleware sets symbolId for symbol when middleware func
   });
 
   test('in separate config file', async () => {
-    await exec('node ../../bin/cli --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --out-dir dist --file index.html --symbol-master-middleware symbol.master.middleware.js', { cwd: __dirname });
+    await exec('node ../../bin/cli --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --out-dir dist --file index.html --symbol-middleware symbol.middleware.js', { cwd: __dirname });
 
     const output = await dirContentsToObject(distPath, /do_objectID$/);
     expect(output).toMatchSnapshot();

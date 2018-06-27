@@ -203,15 +203,15 @@ module.exports = {
 
 ```
 
-## Symbol master middleware
+## Symbol middleware
 
-It is possible to define symbol master middleware either in separete file or as inline function in config file. The asketch generator calls the middleware function when looping symbol masters. 
+It is possible to define symbol (master) middleware either in separete file or as inline function in config file. The asketch generator calls the middleware function when looping symbols. 
 
 ### Separate middleware file 
 
-`html-sketchapp-cli --symbol-master-middleware 'symbol-master-middleware.js'`
+`html-sketchapp-cli --symbol-middleware 'symbol-middleware.js'`
 
-Example symbol master middleware to set symbolID based on symbol name and suffix:
+Example symbol middleware to set symbolID based on symbol name and suffix
 ```
 module.exports = ({ symbol, item, suffix }) => {
     symbol.setId(`${item.dataset.sketchSymbol}${suffix}`);
@@ -225,7 +225,7 @@ module.exports = ({ symbol, item, suffix }) => {
 Where config.js should contain following to set symbol id based on symbol name and suffix:
 ```
 module.exports = {
-  symbolMasterMiddleware: ({ symbol, item, suffix }) => {
+  symbolMiddleware: ({ symbol, item, suffix }) => {
      symbol.setId(`${item.dataset.sketchSymbol}${suffix}`);
    }
 };
