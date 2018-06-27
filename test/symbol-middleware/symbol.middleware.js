@@ -1,3 +1,3 @@
-module.exports = ({ symbol, item, suffix }) => {
-    symbol.setId(`from-config-file-${item.dataset.sketchSymbol}${suffix}`);
+module.exports = ({ symbol, node, suffix }) => {
+    symbol.setId(`from-config-file-${node.dataset.sketchSymbol}${suffix}`);
 };

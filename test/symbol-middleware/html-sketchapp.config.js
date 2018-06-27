@@ -2,7 +2,7 @@ module.exports = {
   file: 'index.html',
   outDir: 'dist',
   puppeteerArgs: '--no-sandbox --disable-setuid-sandbox',
-  symbolMiddleware: ({ symbol, item, suffix }) => {
-     symbol.setId(`from-inline-function-${item.dataset.sketchSymbol}${suffix}`);
+  symbolMiddleware: ({ symbol, node, suffix }) => {
+     symbol.setId(`from-inline-function-${node.dataset.sketchSymbol}${suffix}`);
    }
 };

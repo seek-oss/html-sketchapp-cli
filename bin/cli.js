@@ -109,6 +109,16 @@ require('yargs')
             symbolMiddleware = argSM;
           }
         }
+        const { symbolInstanceMiddleware: argSIM } = argv;
+        let symbolInstanceMiddleware;
+
+        if (argSIM) {
+          if (typeof argSIM === 'string') {
+            symbolInstanceMiddleware = require(path.resolve(process.cwd(), argSIM));
+          } else if (typeof argSIM === 'function') {
+            symbolInstanceMiddleware = argSIM;
+          }
+        }
 
         try {
           const page = await browser.newPage();
@@ -149,7 +159,7 @@ require('yargs')
               const deviceScaleFactor = typeof scale === 'undefined' ? 1 : parseFloat(scale);
               await page.setViewport({ width, height, deviceScaleFactor });
               await page.evaluate(`generateAlmostSketch.snapshotTextStyles({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
-              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolLayerMiddleware: ${symbolLayerMiddleware}, symbolMiddleware: ${symbolMiddleware} })`);
+              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolLayerMiddleware: ${symbolLayerMiddleware}, symbolMiddleware: ${symbolMiddleware}, symbolInstanceMiddleware: ${symbolInstanceMiddleware}  })`);
             }
           }
 

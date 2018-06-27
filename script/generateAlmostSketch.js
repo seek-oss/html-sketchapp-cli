@@ -12,7 +12,7 @@ const {
   ShapeGroup
 } = htmlSketchapp;
 
-const getAllLayers = (item, symbolMastersByName = {}) => {
+const getAllLayers = (item, symbolMastersByName = {}, symbolInstanceMiddleware = {}) => {
   const itemAndChildren = [item, ...item.querySelectorAll('*')];
 
   const symbolInstanceChildren = new Set([
@@ -33,6 +33,7 @@ const getAllLayers = (item, symbolMastersByName = {}) => {
       const symbolInstance = symbolMaster.getSymbolInstance({ x, y, width, height });
 
       symbolInstance.setName(symbolName);
+      symbolInstanceMiddleware({symbolInstance, symbolMaster, node, RESIZING_CONSTRAINTS});
 
       return [symbolInstance];
     } else if (symbolInstanceChildren.has(node)) {
@@ -85,16 +86,16 @@ export function setupSymbols({ name }) {
   page.setName(name);
 }
 
-export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {}, symbolMiddleware = () => {} }, ) {
+export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {}, symbolMiddleware = () => {}, symbolInstanceMiddleware = () => {} },) {
   const nodes = Array.from(document.querySelectorAll('[data-sketch-symbol]'));
 
-  const symbolMastersByName = nodes.reduce((obj, item) => {
-    const name = item.dataset.sketchSymbol;
-    const { left: x, top: y } = item.getBoundingClientRect();
+  const symbolMastersByName = nodes.reduce((obj, node) => {
+    const name = node.dataset.sketchSymbol;
+    const { left: x, top: y } = node.getBoundingClientRect();
 
     const symbol = new SymbolMaster({ x, y });
     symbol.setName(`${name}${suffix}`);
-    symbolMiddleware({symbol, item, suffix});
+    symbolMiddleware({symbol, node, suffix, RESIZING_CONSTRAINTS});
     obj[name] = symbol;
 
     return obj;
@@ -104,7 +105,7 @@ export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {},
     const name = item.dataset.sketchSymbol;
     const symbol = symbolMastersByName[name];
 
-    const layers = getAllLayers(item, symbolMastersByName);
+    const layers = getAllLayers(item, symbolMastersByName, symbolInstanceMiddleware);
 
     layers
       .filter(layer => layer !== null)

@@ -231,13 +231,56 @@ module.exports = {
 };
 ```
 
-### Symbol master middleware arguments
+### Symbol middleware arguments
 
 The middleware function that is called has several arguments passed into it:
 
 - symbol: The symbol master to process
-- item: The item/node from html 
+- node: The node from html 
 - suffix: The suffix set
+- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
+
+
+## Symbol instance middleware
+
+It is possible to define symbol instance middleware either in separete file or as inline function in config file. The asketch generator calls the middleware function when looping symbols instances. 
+
+### Separate middleware file 
+
+`html-sketchapp-cli --symbol-instance-middleware 'symbol-instance-middleware.js'`
+
+Example symbol instance middleware to set symbol instance name and resizing constraints:
+```
+module.exports = ({ symbolInstance, node, RESIZING_CONSTRAINTS}) => {
+  symbolInstance.setName("from-config-file-" + node.dataset.sketchSymbolInstance);
+  symbolInstance.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
+};
+```
+
+### Inline function
+
+`html-sketchapp-cli  --config config.js`
+
+Where config.js should contain following to set symbol id based on symbol name and suffix:
+```
+module.exports = {
+  symbolInstanceMiddleware: (args) => {
+    const { symbolInstance, RESIZING_CONSTRAINTS, node } = args;
+
+    symbolInstance.setName("from-inline-function-" + node.dataset.sketchSymbolInstance);
+    symbolInstance.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
+  }
+};
+```
+
+### Symbol instance middleware arguments
+
+The middleware function that is called has several arguments passed into it:
+
+- symbolInstance: The symbolInstance to process
+- symbolMaster: The symbol (master) the symbol instance is related
+- node: The node from html
+- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
 
 ### Puppeteer args
 
