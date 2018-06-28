@@ -29,6 +29,7 @@ Object {
   },
   "document.page.json": Object {
     "_class": "page",
+    "clippingMaskMode": 0,
     "do_objectID": "__GUID__",
     "exportOptions": Object {
       "_class": "exportOptions",
@@ -46,6 +47,7 @@ Object {
       "y": 0,
     },
     "hasClickThrough": true,
+    "hasClippingMask": false,
     "horizontalRulerData": Object {
       "_class": "rulerData",
       "base": 0,
@@ -68,6 +70,7 @@ Object {
           "red": 1,
         },
         "changeIdentifier": 0,
+        "clippingMaskMode": 0,
         "do_objectID": "__GUID__",
         "exportOptions": Object {
           "_class": "exportOptions",
@@ -86,6 +89,7 @@ Object {
         },
         "hasBackgroundColor": false,
         "hasClickThrough": true,
+        "hasClippingMask": false,
         "horizontalRulerData": Object {
           "_class": "rulerData",
           "base": 0,
@@ -130,6 +134,7 @@ Object {
               Object {
                 "_class": "rectangle",
                 "booleanOperation": -1,
+                "clippingMaskMode": 0,
                 "do_objectID": "__GUID__",
                 "edited": false,
                 "exportOptions": Object {
@@ -148,6 +153,7 @@ Object {
                   "x": 0,
                   "y": 0,
                 },
+                "hasClippingMask": false,
                 "hasConvertedToNewRoundCorners": true,
                 "isFlippedHorizontal": false,
                 "isFlippedVertical": false,
@@ -268,6 +274,7 @@ Object {
           Object {
             "_class": "text",
             "automaticallyDrawOnUnderlyingPath": false,
+            "clippingMaskMode": 0,
             "do_objectID": "__GUID__",
             "dontSynchroniseWithSymbol": false,
             "exportOptions": Object {
@@ -285,6 +292,7 @@ Object {
               "x": 0,
               "y": 0,
             },
+            "hasClippingMask": false,
             "isFlippedHorizontal": false,
             "isFlippedVertical": false,
             "isLocked": false,
@@ -340,6 +348,7 @@ Object {
           "red": 1,
         },
         "changeIdentifier": 0,
+        "clippingMaskMode": 0,
         "do_objectID": "__GUID__",
         "exportOptions": Object {
           "_class": "exportOptions",
@@ -358,6 +367,7 @@ Object {
         },
         "hasBackgroundColor": false,
         "hasClickThrough": true,
+        "hasClippingMask": false,
         "horizontalRulerData": Object {
           "_class": "rulerData",
           "base": 0,
@@ -402,6 +412,7 @@ Object {
               Object {
                 "_class": "rectangle",
                 "booleanOperation": -1,
+                "clippingMaskMode": 0,
                 "do_objectID": "__GUID__",
                 "edited": false,
                 "exportOptions": Object {
@@ -420,6 +431,7 @@ Object {
                   "x": 0,
                   "y": 0,
                 },
+                "hasClippingMask": false,
                 "hasConvertedToNewRoundCorners": true,
                 "isFlippedHorizontal": false,
                 "isFlippedVertical": false,
@@ -540,6 +552,7 @@ Object {
           Object {
             "_class": "text",
             "automaticallyDrawOnUnderlyingPath": false,
+            "clippingMaskMode": 0,
             "do_objectID": "__GUID__",
             "dontSynchroniseWithSymbol": false,
             "exportOptions": Object {
@@ -557,6 +570,7 @@ Object {
               "x": 0,
               "y": 0,
             },
+            "hasClippingMask": false,
             "isFlippedHorizontal": false,
             "isFlippedVertical": false,
             "isLocked": false,
@@ -612,6 +626,7 @@ Object {
           "red": 1,
         },
         "changeIdentifier": 0,
+        "clippingMaskMode": 0,
         "do_objectID": "__GUID__",
         "exportOptions": Object {
           "_class": "exportOptions",
@@ -630,6 +645,7 @@ Object {
         },
         "hasBackgroundColor": false,
         "hasClickThrough": true,
+        "hasClippingMask": false,
         "horizontalRulerData": Object {
           "_class": "rulerData",
           "base": 0,
@@ -646,6 +662,7 @@ Object {
         "layers": Array [
           Object {
             "_class": "symbolInstance",
+            "clippingMaskMode": 0,
             "do_objectID": "__GUID__",
             "exportOptions": Object {
               "_class": "exportOptions",
@@ -662,6 +679,7 @@ Object {
               "x": 0,
               "y": 0,
             },
+            "hasClippingMask": false,
             "isFlippedHorizontal": false,
             "isFlippedVertical": false,
             "isLocked": false,
@@ -684,6 +702,7 @@ Object {
           },
           Object {
             "_class": "symbolInstance",
+            "clippingMaskMode": 0,
             "do_objectID": "__GUID__",
             "exportOptions": Object {
               "_class": "exportOptions",
@@ -700,6 +719,7 @@ Object {
               "x": 0,
               "y": 18,
             },
+            "hasClippingMask": false,
             "isFlippedHorizontal": false,
             "isFlippedVertical": false,
             "isLocked": false,
@@ -751,6 +771,7 @@ Object {
           "red": 1,
         },
         "changeIdentifier": 0,
+        "clippingMaskMode": 0,
         "do_objectID": "__GUID__",
         "exportOptions": Object {
           "_class": "exportOptions",
@@ -769,6 +790,7 @@ Object {
         },
         "hasBackgroundColor": false,
         "hasClickThrough": true,
+        "hasClippingMask": false,
         "horizontalRulerData": Object {
           "_class": "rulerData",
           "base": 0,
@@ -813,6 +835,7 @@ Object {
               Object {
                 "_class": "rectangle",
                 "booleanOperation": -1,
+                "clippingMaskMode": 0,
                 "do_objectID": "__GUID__",
                 "edited": false,
                 "exportOptions": Object {
@@ -831,6 +854,7 @@ Object {
                   "x": 0,
                   "y": 0,
                 },
+                "hasClippingMask": false,
                 "hasConvertedToNewRoundCorners": true,
                 "isFlippedHorizontal": false,
                 "isFlippedVertical": false,
@@ -951,6 +975,7 @@ Object {
           Object {
             "_class": "text",
             "automaticallyDrawOnUnderlyingPath": false,
+            "clippingMaskMode": 0,
             "do_objectID": "__GUID__",
             "dontSynchroniseWithSymbol": false,
             "exportOptions": Object {
@@ -968,6 +993,7 @@ Object {
               "x": 0,
               "y": 0,
             },
+            "hasClippingMask": false,
             "isFlippedHorizontal": false,
             "isFlippedVertical": false,
             "isLocked": false,
@@ -1023,6 +1049,7 @@ Object {
           "red": 1,
         },
         "changeIdentifier": 0,
+        "clippingMaskMode": 0,
         "do_objectID": "__GUID__",
         "exportOptions": Object {
           "_class": "exportOptions",
@@ -1041,6 +1068,7 @@ Object {
         },
         "hasBackgroundColor": false,
         "hasClickThrough": true,
+        "hasClippingMask": false,
         "horizontalRulerData": Object {
           "_class": "rulerData",
           "base": 0,
@@ -1085,6 +1113,7 @@ Object {
               Object {
                 "_class": "rectangle",
                 "booleanOperation": -1,
+                "clippingMaskMode": 0,
                 "do_objectID": "__GUID__",
                 "edited": false,
                 "exportOptions": Object {
@@ -1103,6 +1132,7 @@ Object {
                   "x": 0,
                   "y": 0,
                 },
+                "hasClippingMask": false,
                 "hasConvertedToNewRoundCorners": true,
                 "isFlippedHorizontal": false,
                 "isFlippedVertical": false,
@@ -1223,6 +1253,7 @@ Object {
           Object {
             "_class": "text",
             "automaticallyDrawOnUnderlyingPath": false,
+            "clippingMaskMode": 0,
             "do_objectID": "__GUID__",
             "dontSynchroniseWithSymbol": false,
             "exportOptions": Object {
@@ -1240,6 +1271,7 @@ Object {
               "x": 0,
               "y": 0,
             },
+            "hasClippingMask": false,
             "isFlippedHorizontal": false,
             "isFlippedVertical": false,
             "isLocked": false,
@@ -1295,6 +1327,7 @@ Object {
           "red": 1,
         },
         "changeIdentifier": 0,
+        "clippingMaskMode": 0,
         "do_objectID": "__GUID__",
         "exportOptions": Object {
           "_class": "exportOptions",
@@ -1313,6 +1346,7 @@ Object {
         },
         "hasBackgroundColor": false,
         "hasClickThrough": true,
+        "hasClippingMask": false,
         "horizontalRulerData": Object {
           "_class": "rulerData",
           "base": 0,
@@ -1329,6 +1363,7 @@ Object {
         "layers": Array [
           Object {
             "_class": "symbolInstance",
+            "clippingMaskMode": 0,
             "do_objectID": "__GUID__",
             "exportOptions": Object {
               "_class": "exportOptions",
@@ -1345,6 +1380,7 @@ Object {
               "x": 0,
               "y": 0,
             },
+            "hasClippingMask": false,
             "isFlippedHorizontal": false,
             "isFlippedVertical": false,
             "isLocked": false,
@@ -1367,6 +1403,7 @@ Object {
           },
           Object {
             "_class": "symbolInstance",
+            "clippingMaskMode": 0,
             "do_objectID": "__GUID__",
             "exportOptions": Object {
               "_class": "exportOptions",
@@ -1383,6 +1420,7 @@ Object {
               "x": 0,
               "y": 18,
             },
+            "hasClippingMask": false,
             "isFlippedHorizontal": false,
             "isFlippedVertical": false,
             "isLocked": false,
