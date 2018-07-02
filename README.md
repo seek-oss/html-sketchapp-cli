@@ -120,190 +120,6 @@ $ html-sketchapp --viewports.HigherDensity 1024x768@1.5 --viewports.Retina 1024x
 
 If no scaling factor is provided, a default of `1` will be used.
 
-### Debug mode
-
-If you need to see what Puppeteer is doing, you can provide the `--debug` flag which will do the following things:
-- Turn off headless mode
-- Bring the browser window to the front
-- Forward `console` calls to the terminal
-- Stop the browser from closing until you exit the CLI tool
-
-For example:
-
-```bash
-$ html-sketchapp --url http://localhost:3000 --out-dir dist --debug
-```
-
-### Symbol Layer Middleware
-
-Symbol Layer Middleware allows you to call out to any APIs that may be exposed on the underlying html-sketchapp layer.
-
-The current usecase for this is the new `layer.setResizingConstraint` API which allows you to configure how a layer should behave when a symbol is resized.
-
-#### Requiring a file
-
-The below uses the string argument to `require` in a file that defines what resizing a layer should have applied to it. In the below case, fixing the layer to the top and left.
-
-```bash
-$ html-sketchapp --symbol-layer-middleware symbol.layer.middleware.js
-```
-
-```js
-module.exports = (args) => {
-  const { layer, RESIZING_CONSTRAINTS } = args;
-
-  layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
-};
-```
-
-#### Inline function
-
-If you use the config file you can provide an inline function and avoid creating a separate file:
-
-```bash
-$ html-sketchapp --config config.js
-```
-
-```js
-module.exports = {
-  symbolLayerMiddleware: (args) => {
-    const { layer, RESIZING_CONSTRAINTS } = args;
-
-    layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
-  }
-};
-```
-
-#### Symbol layer middleware arguments
-
-The function that is called has several arguments passed into it so you can provide different resizing options for different types of layers.
-
-The following things are passed into symbol
-- layer: the html-sketchapp layer instance
-- SVG: The SVG class for type checking of layer
-- Text: The Text class for type checking of layer
-- Rectangle: The Rectangle class for type checking of layer
-- ShapeGroup: The ShapeGroup class for type checking of layer
-- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
-
-Handling SVGs differently from other layers:
-
-```js
-module.exports = {
-  symbolLayerMiddleware: (args) => {
-    const { layer, SVG, RESIZING_CONSTRAINTS } = args;
-
-    layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
-
-    if(layer instanceof SVG) {
-      layer.setResizingConstraint(RESIZING_CONSTRAINTS.TOP, RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.WIDTH, RESIZING_CONSTRAINTS.HEIGHT);
-    }
-  }
-};
-
-```
-
-## Symbol middleware
-
-It is possible to define symbol (master) middleware either in separete file or as inline function in config file. The asketch generator calls the middleware function when looping symbols. 
-
-### Separate middleware file 
-
-`html-sketchapp-cli --symbol-middleware 'symbol-middleware.js'`
-
-Example symbol middleware to set symbolID based on symbol name and suffix
-```
-module.exports = ({ symbol, item, suffix }) => {
-    symbol.setId(`${item.dataset.sketchSymbol}${suffix}`);
-};
-```
-
-### Inline function
-
-`html-sketchapp-cli  --config config.js`
-
-Where config.js should contain following to set symbol id based on symbol name and suffix:
-```
-module.exports = {
-  symbolMiddleware: ({ symbol, item, suffix }) => {
-     symbol.setId(`${item.dataset.sketchSymbol}${suffix}`);
-   }
-};
-```
-
-### Symbol middleware arguments
-
-The middleware function that is called has several arguments passed into it:
-
-- symbol: The symbol master to process
-- node: The node from html 
-- suffix: The suffix set
-- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
-
-
-## Symbol instance middleware
-
-It is possible to define symbol instance middleware either in separete file or as inline function in config file. The asketch generator calls the middleware function when looping symbols instances. 
-
-### Separate middleware file 
-
-`html-sketchapp-cli --symbol-instance-middleware 'symbol-instance-middleware.js'`
-
-Example symbol instance middleware to set symbol instance name and resizing constraints:
-```
-module.exports = ({ symbolInstance, node, RESIZING_CONSTRAINTS}) => {
-  symbolInstance.setName(`custom-prefix-${node.dataset.sketchSymbolInstance}`);
-  symbolInstance.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
-};
-```
-
-### Inline function
-
-`html-sketchapp-cli  --config config.js`
-
-Where config.js should contain following to set symbol id based on symbol name and suffix:
-```
-module.exports = {
-  symbolInstanceMiddleware: (args) => {
-    const { symbolInstance, RESIZING_CONSTRAINTS, node } = args;
-
-    symbolInstance.setName(`custom-prefix-${node.dataset.sketchSymbolInstance}`);
-    symbolInstance.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
-  }
-};
-```
-
-### Symbol instance middleware arguments
-
-The middleware function that is called has several arguments passed into it:
-
-- symbolInstance: The symbolInstance to process
-- symbolMaster: The symbol (master) the symbol instance is related
-- node: The node from html
-- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
-
-### Puppeteer args
-
-If you need to provide command line arguments to the browser instance via [Puppeteer](https://github.com/GoogleChrome/puppeteer), you can provide the `puppeteer-args` option.
-
-Since Puppeteer uses [Chromium](https://www.chromium.org/Home) internally, you can refer to the [List of Chromium Command Line Switches](https://peter.sh/experiments/chromium-command-line-switches) for available options.
-
-For example, if you'd like to disable the browser sandbox:
-
-```bash
-$ html-sketchapp --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --file sketch.html --out-dir dist
-```
-
-*Note: Because Puppeteer args are prefixed with hyphens, you **must** use an equals sign and quotes when providing this option via the command line (as seen above).*
-
-### Chromium executable
-
-If you'd like to override the Chromium used by Puppeteer, you can provide a path to the executable with the `puppeteer-executable-path` option.
-
-```bash
-$ html-sketchapp --puppeteer-executable-path google-chrome-unstable --file sketch.html --out-dir dist
-```
-
 ### Config file
 
 All options can be provided via an `html-sketchapp.config.js` file.
@@ -327,7 +143,7 @@ You can provide an alternate config file path with the `--config` option.
 $ html-sketchapp --config example.config.js
 ```
 
-## Importing into Sketch
+### Importing into Sketch
 
 Once this command has successfully run, the following files will be generated in the output directory.
 
@@ -343,6 +159,138 @@ $ html-sketchapp install
 Then, open a new Sketch document and, from the menu, select `Plugins > From *Almost* Sketch to Sketch`. In the file picker, select both `document.asketch.json` and `page.asketch.json`, and click `Choose`.
 
 Congratulations! You should now have your symbols, text styles and document colors available within Sketch! 💎🎉
+
+## Advanced Usage
+
+### Debug mode
+
+If you need to see what Puppeteer is doing, you can provide the `--debug` flag which will do the following things:
+- Turn off headless mode
+- Bring the browser window to the front
+- Forward `console` calls to the terminal
+- Stop the browser from closing until you exit the CLI tool
+
+For example:
+
+```bash
+$ html-sketchapp --url http://localhost:3000 --out-dir dist --debug
+```
+
+### Puppeteer args
+
+If you need to provide command line arguments to the browser instance via [Puppeteer](https://github.com/GoogleChrome/puppeteer), you can provide the `puppeteer-args` option.
+
+Since Puppeteer uses [Chromium](https://www.chromium.org/Home) internally, you can refer to the [List of Chromium Command Line Switches](https://peter.sh/experiments/chromium-command-line-switches) for available options.
+
+For example, if you'd like to disable the browser sandbox:
+
+```bash
+$ html-sketchapp --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --file sketch.html --out-dir dist
+```
+
+*Note: Because Puppeteer args are prefixed with hyphens, you **must** use an equals sign and quotes when providing this option via the command line (as seen above).*
+
+### Chromium executable
+
+If you'd like to override the Chromium used by Puppeteer, you can provide a path to the executable with the `puppeteer-executable-path` option.
+
+```bash
+$ html-sketchapp --puppeteer-executable-path google-chrome-unstable --file sketch.html --out-dir dist
+```
+
+### Middleware
+
+If you need to call out to lower-level html-sketchapp APIs, you can provide middleware functions that provide custom logic for each instance of the underlying Sketch classes.
+
+It's recommended that middleware functions are provided via inline functions in your [config file](#config-file), for example:
+
+```js
+module.exports = {
+  symbolLayerMiddleware: (args) => { ... }
+};
+```
+
+Alternatively, you can also provide middleware as standalone JavaScript files, configured via the command line:
+
+```bash
+$ html-sketchapp --symbol-layer-middleware symbol.layer.middleware.js
+```
+
+```js
+module.exports = (args) => { ... };
+```
+
+However, in order to keep things streamlined, all documentation will refer to the config file usage.
+
+#### Symbol Layer Middleware
+
+This middleware is executed for every layer within a symbol.
+
+The typical use case for this is html-sketchapp's `layer.setResizingConstraint` API which allows you to configure how a layer should behave when a symbol is resized.
+
+```js
+module.exports = {
+  symbolLayerMiddleware: args => { ... }
+};
+```
+
+The following arguments are passed into your middleware function:
+- layer: the html-sketchapp layer instance
+- SVG: The SVG class for type checking of layer
+- Text: The Text class for type checking of layer
+- Rectangle: The Rectangle class for type checking of layer
+- ShapeGroup: The ShapeGroup class for type checking of layer
+- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
+
+For example, when handling SVGs differently from other layers:
+
+```js
+module.exports = {
+  symbolLayerMiddleware: (args) => {
+    const { layer, SVG, RESIZING_CONSTRAINTS } = args;
+
+    layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
+
+    if(layer instanceof SVG) {
+      layer.setResizingConstraint(RESIZING_CONSTRAINTS.TOP, RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.WIDTH, RESIZING_CONSTRAINTS.HEIGHT);
+    }
+  }
+};
+
+```
+
+#### Symbol Middleware
+
+This middleware is executed for every symbol within a document.
+
+```js
+module.exports = {
+  symbolMiddleware: args => { ... }
+};
+```
+
+The following arguments are passed into your middleware function:
+- symbol: The current symbol master
+- node: The source HTML node
+- suffix: The symbol name suffix (e.g. `/Desktop`)
+- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
+
+
+#### Symbol Instance Middleware
+
+This middleware is executed for every symbol instance within a document.
+
+```js
+module.exports = {
+  symbolInstanceMiddleware: args => { ... }
+};
+```
+
+The following arguments are passed into your middleware function:
+- symbolInstance: The current symbol instance
+- symbolMaster: The symbol master that the symbol instance is referencing
+- node: The source HTML node
+- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
 
 ## Contributing
 
