@@ -200,9 +200,9 @@ $ html-sketchapp --puppeteer-executable-path google-chrome-unstable --file sketc
 
 ### Middleware
 
-If you need to call out to lower-level html-sketchapp APIs, you can provide middleware functions that provide custom logic for each instance of the underlying Sketch classes.
+If you need to call out to lower-level html-sketchapp APIs, you can provide middleware functions that allow you to modify the underlying Sketch classes as they're generated.
 
-It's recommended that middleware functions are provided via inline functions in your [config file](#config-file), for example:
+It's recommended that you provide middleware via a [config file](#config-file) as inline functions, for example:
 
 ```js
 module.exports = {
@@ -216,11 +216,13 @@ Alternatively, you can also provide middleware as standalone JavaScript files, c
 $ html-sketchapp --symbol-layer-middleware symbol.layer.middleware.js
 ```
 
+This assumes that your middleware is a JavaScript module that exports the function:
+
 ```js
 module.exports = (args) => { ... };
 ```
 
-However, in order to keep things streamlined, all documentation will refer to the config file usage.
+However, in order to keep the documentation streamlined, all examples will use the config file notation.
 
 #### Symbol Layer Middleware
 
