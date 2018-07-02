@@ -240,7 +240,7 @@ The following arguments are passed into your middleware function:
 - Text: The Text class for type checking of layer
 - Rectangle: The Rectangle class for type checking of layer
 - ShapeGroup: The ShapeGroup class for type checking of layer
-- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
+- RESIZING_CONSTRAINTS: Object containing constants for the `setResizingConstraint` API
 
 For example, when handling SVGs differently from other layers:
 
@@ -273,7 +273,7 @@ The following arguments are passed into your middleware function:
 - symbol: The current symbol master
 - node: The source HTML node
 - suffix: The symbol name suffix (e.g. `/Desktop`)
-- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
+- RESIZING_CONSTRAINTS: Object containing constants for the `setResizingConstraint` API
 
 
 #### Symbol Instance Middleware
@@ -290,7 +290,7 @@ The following arguments are passed into your middleware function:
 - symbolInstance: The current symbol instance
 - symbolMaster: The symbol master that the symbol instance is referencing
 - node: The source HTML node
-- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
+- RESIZING_CONSTRAINTS: Object containing constants for the `setResizingConstraint` API
 
 ## Contributing
 
