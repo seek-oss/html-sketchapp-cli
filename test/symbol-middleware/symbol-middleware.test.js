@@ -12,14 +12,14 @@ describe('symbol-middleware sets symbolId for symbol when middleware function is
   test('inline in config file', async () => {
   await exec('node ../../bin/cli', { cwd: __dirname });
 
-    const output = await dirContentsToObject(distPath, /do_objectID$/);
+    const output = await dirContentsToObject(distPath);
     expect(output).toMatchSnapshot();
   });
 
   test('in separate config file', async () => {
     await exec('node ../../bin/cli --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --out-dir dist --file index.html --symbol-middleware symbol.middleware.js', { cwd: __dirname });
 
-    const output = await dirContentsToObject(distPath, /do_objectID$/);
+    const output = await dirContentsToObject(distPath);
     expect(output).toMatchSnapshot();
   });
 })
