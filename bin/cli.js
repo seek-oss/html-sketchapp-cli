@@ -29,6 +29,12 @@ const makeServer = async (relativePath, port) => {
   return server;
 };
 
+const resolveMiddleware = configValue => {
+  return (typeof configValue === 'string') ?
+    require(path.resolve(process.cwd(), configValue))
+    : configValue;
+};
+
 require('yargs')
   .config(config)
   .config('config', 'Path to JavaScript config file', customConfigPath => require(customConfigPath))
@@ -80,6 +86,10 @@ require('yargs')
         const symbolsUrl = argv.serve ? urlJoin(`http://localhost:${String(port)}`, argv.url || '/') : url;
         const debug = argv.debug;
 
+        const symbolLayerMiddleware = resolveMiddleware(argv.symbolLayerMiddleware);
+        const symbolMiddleware = resolveMiddleware(argv.symbolMiddleware);
+        const symbolInstanceMiddleware = resolveMiddleware(argv.symbolInstanceMiddleware);
+
         const launchArgs = {
             args: argv.puppeteerArgs ? argv.puppeteerArgs.split(' ') : [],
             executablePath: argv.puppeteerExecutablePath,
@@ -87,38 +97,6 @@ require('yargs')
         };
 
         const browser = await puppeteer.launch(launchArgs);
-
-        const { symbolLayerMiddleware: argSLM } = argv;
-        let symbolLayerMiddleware;
-
-        if (argSLM) {
-          if (typeof argSLM === 'string') {
-            symbolLayerMiddleware = require(path.resolve(process.cwd(), argSLM));
-          } else if (typeof argSLM === 'function') {
-            symbolLayerMiddleware = argSLM;
-          }
-        }
-
-        const { symbolMiddleware: argSM } = argv;
-        let symbolMiddleware;
-
-        if (argSM) {
-          if (typeof argSM === 'string') {
-            symbolMiddleware = require(path.resolve(process.cwd(), argSM));
-          } else if (typeof argSM === 'function') {
-            symbolMiddleware = argSM;
-          }
-        }
-        const { symbolInstanceMiddleware: argSIM } = argv;
-        let symbolInstanceMiddleware;
-
-        if (argSIM) {
-          if (typeof argSIM === 'string') {
-            symbolInstanceMiddleware = require(path.resolve(process.cwd(), argSIM));
-          } else if (typeof argSIM === 'function') {
-            symbolInstanceMiddleware = argSIM;
-          }
-        }
 
         try {
           const page = await browser.newPage();
