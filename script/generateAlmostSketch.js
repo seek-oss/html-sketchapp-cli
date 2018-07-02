@@ -12,14 +12,14 @@ const {
   ShapeGroup
 } = htmlSketchapp;
 
-const getAllLayers = (item, symbolMastersByName = {}, symbolInstanceMiddleware = {}) => {
-  const itemAndChildren = [item, ...item.querySelectorAll('*')];
+const getAllLayers = (rootNode, symbolMastersByName = {}, symbolInstanceMiddleware = {}) => {
+  const rootNodeAndChildren = [rootNode, ...rootNode.querySelectorAll('*')];
 
   const symbolInstanceChildren = new Set([
-    ...item.querySelectorAll('[data-sketch-symbol-instance] *')
+    ...rootNode.querySelectorAll('[data-sketch-symbol-instance] *')
   ]);
 
-  const layers = Array.from(itemAndChildren).map(node => {
+  const layers = Array.from(rootNodeAndChildren).map(node => {
     if (node.dataset.sketchSymbolInstance) {
       const symbolName = node.dataset.sketchSymbolInstance;
 
@@ -52,8 +52,8 @@ const doc = new Document();
 
 export function snapshotColorStyles() {
   Array.from(document.querySelectorAll('[data-sketch-color]'))
-    .forEach(item => {
-      const color = item.dataset.sketchColor;
+    .forEach(node => {
+      const color = node.dataset.sketchColor;
 
       doc.addColor(color);
     });
@@ -61,11 +61,11 @@ export function snapshotColorStyles() {
 
 export function snapshotTextStyles({ suffix = '' }) {
   Array.from(document.querySelectorAll('[data-sketch-text]'))
-    .forEach(item => {
-      getAllLayers(item)
+    .forEach(node => {
+      getAllLayers(node)
         .filter(layer => layer instanceof Text)
         .forEach(layer => {
-          const name = item.dataset.sketchText;
+          const name = node.dataset.sketchText;
 
           layer.setName(`${name}${suffix}`);
           doc.addTextStyle(layer);
@@ -101,11 +101,11 @@ export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {},
     return obj;
   }, {});
 
-  const symbols = nodes.map(item => {
-    const name = item.dataset.sketchSymbol;
+  const symbols = nodes.map(node => {
+    const name = node.dataset.sketchSymbol;
     const symbol = symbolMastersByName[name];
 
-    const layers = getAllLayers(item, symbolMastersByName, symbolInstanceMiddleware);
+    const layers = getAllLayers(node, symbolMastersByName, symbolInstanceMiddleware);
 
     layers
       .filter(layer => layer !== null)
