@@ -12,14 +12,14 @@ const {
   ShapeGroup
 } = htmlSketchapp;
 
-const getAllLayers = (item, symbolMastersByName = {}) => {
-  const itemAndChildren = [item, ...item.querySelectorAll('*')];
+const getAllLayers = (rootNode, symbolMastersByName = {}, symbolInstanceMiddleware = {}) => {
+  const rootNodeAndChildren = [rootNode, ...rootNode.querySelectorAll('*')];
 
   const symbolInstanceChildren = new Set([
-    ...item.querySelectorAll('[data-sketch-symbol-instance] *')
+    ...rootNode.querySelectorAll('[data-sketch-symbol-instance] *')
   ]);
 
-  const layers = Array.from(itemAndChildren).map(node => {
+  const layers = Array.from(rootNodeAndChildren).map(node => {
     if (node.dataset.sketchSymbolInstance) {
       const symbolName = node.dataset.sketchSymbolInstance;
 
@@ -33,6 +33,7 @@ const getAllLayers = (item, symbolMastersByName = {}) => {
       const symbolInstance = symbolMaster.getSymbolInstance({ x, y, width, height });
 
       symbolInstance.setName(symbolName);
+      symbolInstanceMiddleware({symbolInstance, symbolMaster, node, RESIZING_CONSTRAINTS});
 
       return [symbolInstance];
     } else if (symbolInstanceChildren.has(node)) {
@@ -51,8 +52,8 @@ const doc = new Document();
 
 export function snapshotColorStyles() {
   Array.from(document.querySelectorAll('[data-sketch-color]'))
-    .forEach(item => {
-      const color = item.dataset.sketchColor;
+    .forEach(node => {
+      const color = node.dataset.sketchColor;
 
       doc.addColor(color);
     });
@@ -60,11 +61,11 @@ export function snapshotColorStyles() {
 
 export function snapshotTextStyles({ suffix = '' }) {
   Array.from(document.querySelectorAll('[data-sketch-text]'))
-    .forEach(item => {
-      getAllLayers(item)
+    .forEach(node => {
+      getAllLayers(node)
         .filter(layer => layer instanceof Text)
         .forEach(layer => {
-          const name = item.dataset.sketchText;
+          const name = node.dataset.sketchText;
 
           layer.setName(`${name}${suffix}`);
           doc.addTextStyle(layer);
@@ -85,26 +86,26 @@ export function setupSymbols({ name }) {
   page.setName(name);
 }
 
-export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {} }, ) {
+export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {}, symbolMiddleware = () => {}, symbolInstanceMiddleware = () => {} },) {
   const nodes = Array.from(document.querySelectorAll('[data-sketch-symbol]'));
 
-  const symbolMastersByName = nodes.reduce((obj, item) => {
-    const name = item.dataset.sketchSymbol;
-    const { left: x, top: y } = item.getBoundingClientRect();
+  const symbolMastersByName = nodes.reduce((obj, node) => {
+    const name = node.dataset.sketchSymbol;
+    const { left: x, top: y } = node.getBoundingClientRect();
 
     const symbol = new SymbolMaster({ x, y });
     symbol.setName(`${name}${suffix}`);
-
+    symbolMiddleware({symbol, node, suffix, RESIZING_CONSTRAINTS});
     obj[name] = symbol;
 
     return obj;
   }, {});
 
-  const symbols = nodes.map(item => {
-    const name = item.dataset.sketchSymbol;
+  const symbols = nodes.map(node => {
+    const name = node.dataset.sketchSymbol;
     const symbol = symbolMastersByName[name];
 
-    const layers = getAllLayers(item, symbolMastersByName);
+    const layers = getAllLayers(node, symbolMastersByName, symbolInstanceMiddleware);
 
     layers
       .filter(layer => layer !== null)

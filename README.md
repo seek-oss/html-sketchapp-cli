@@ -141,6 +141,48 @@ $ html-sketchapp --viewports.HigherDensity 1024x768@1.5 --viewports.Retina 1024x
 
 If no scaling factor is provided, a default of `1` will be used.
 
+### Config file
+
+All options can be provided via an `html-sketchapp.config.js` file.
+
+```js
+module.exports = {
+  file: 'sketch.html',
+  outDir: 'dist/sketch',
+  viewports: {
+    Desktop: '1024x768',
+    Mobile: '320x568'
+  },
+  puppeteerArgs: '--no-sandbox --disable-setuid-sandbox',
+  puppeteerExecutablePath: 'google-chrome-unstable'
+};
+```
+
+You can provide an alternate config file path with the `--config` option.
+
+```bash
+$ html-sketchapp --config example.config.js
+```
+
+### Importing into Sketch
+
+Once this command has successfully run, the following files will be generated in the output directory.
+
+- `document.asketch.json`
+- `page.asketch.json`
+
+These need to be imported into Sketch via html-sketchapp's corresponding Sketch plugin. To ease the install process, you can run the following command.
+
+```bash
+$ html-sketchapp install
+```
+
+Then, open a new Sketch document and, from the menu, select `Plugins > From *Almost* Sketch to Sketch`. In the file picker, select both `document.asketch.json` and `page.asketch.json`, and click `Choose`.
+
+Congratulations! You should now have your symbols, text styles and document colors available within Sketch! 💎🎉
+
+## Advanced Usage
+
 ### Debug mode
 
 If you need to see what Puppeteer is doing, you can provide the `--debug` flag which will do the following things:
@@ -153,75 +195,6 @@ For example:
 
 ```bash
 $ html-sketchapp --url http://localhost:3000 --out-dir dist --debug
-```
-
-### Symbol Layer Middleware
-
-Symbol Layer Middleware allows you to call out to any APIs that may be exposed on the underlying html-sketchapp layer.
-
-The current usecase for this is the new `layer.setResizingConstraint` API which allows you to configure how a layer should behave when a symbol is resized.
-
-#### Requiring a file
-
-The below uses the string argument to `require` in a file that defines what resizing a layer should have applied to it. In the below case, fixing the layer to the top and left.
-
-```bash
-$ html-sketchapp --symbol-layer-middleware symbol.layer.middleware.js
-```
-
-```js
-module.exports = (args) => {
-  const { layer, RESIZING_CONSTRAINTS } = args;
-
-  layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
-};
-```
-
-#### Inline function
-
-If you use the config file you can provide an inline function and avoid creating a separate file:
-
-```bash
-$ html-sketchapp --config config.js
-```
-
-```js
-module.exports = {
-  symbolLayerMiddleware: (args) => {
-    const { layer, RESIZING_CONSTRAINTS } = args;
-
-    layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
-  }
-};
-```
-
-#### Symbol layer middleware arguments
-
-The function that is called has several arguments passed into it so you can provide different resizing options for different types of layers.
-
-The following things are passed into symbol
-- layer: the html-sketchapp layer instance
-- SVG: The SVG class for type checking of layer
-- Text: The Text class for type checking of layer
-- Rectangle: The Rectangle class for type checking of layer
-- ShapeGroup: The ShapeGroup class for type checking of layer
-- RESIZING_CONSTRAINTS: contains friendly names for `setResizingConstraint` API.
-
-Handling SVGs differently from other layers:
-
-```js
-module.exports = {
-  symbolLayerMiddleware: (args) => {
-    const { layer, SVG, RESIZING_CONSTRAINTS } = args;
-
-    layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
-
-    if(layer instanceof SVG) {
-      layer.setResizingConstraint(RESIZING_CONSTRAINTS.TOP, RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.WIDTH, RESIZING_CONSTRAINTS.HEIGHT);
-    }
-  }
-};
-
 ```
 
 ### Puppeteer args
@@ -246,45 +219,101 @@ If you'd like to override the Chromium used by Puppeteer, you can provide a path
 $ html-sketchapp --puppeteer-executable-path google-chrome-unstable --file sketch.html --out-dir dist
 ```
 
-### Config file
+### Middleware
 
-All options can be provided via an `html-sketchapp.config.js` file.
+If you need to call out to lower-level html-sketchapp APIs, you can provide middleware functions that allow you to modify the underlying Sketch classes as they're generated.
+
+It's recommended that you provide middleware via a [config file](#config-file) as inline functions, for example:
 
 ```js
 module.exports = {
-  file: 'sketch.html',
-  outDir: 'dist/sketch',
-  viewports: {
-    Desktop: '1024x768',
-    Mobile: '320x568'
-  },
-  puppeteerArgs: '--no-sandbox --disable-setuid-sandbox',
-  puppeteerExecutablePath: 'google-chrome-unstable'
+  symbolLayerMiddleware: (args) => { ... }
 };
 ```
 
-You can provide an alternate config file path with the `--config` option.
+Alternatively, you can also provide middleware as standalone JavaScript files, configured via the command line:
 
 ```bash
-$ html-sketchapp --config example.config.js
+$ html-sketchapp --symbol-layer-middleware symbol.layer.middleware.js
 ```
 
-## Importing into Sketch
+This assumes that your middleware is a JavaScript module that exports the function:
 
-Once this command has successfully run, the following files will be generated in the output directory.
-
-- `document.asketch.json`
-- `page.asketch.json`
-
-These need to be imported into Sketch via html-sketchapp's corresponding Sketch plugin. To ease the install process, you can run the following command.
-
-```bash
-$ html-sketchapp install
+```js
+module.exports = (args) => { ... };
 ```
 
-Then, open a new Sketch document and, from the menu, select `Plugins > From *Almost* Sketch to Sketch`. In the file picker, select both `document.asketch.json` and `page.asketch.json`, and click `Choose`.
+However, in order to keep the documentation streamlined, all examples will use the config file notation.
 
-Congratulations! You should now have your symbols, text styles and document colors available within Sketch! 💎🎉
+#### Symbol Layer Middleware
+
+This middleware is executed for every layer within a symbol.
+
+The typical use case for this is html-sketchapp's `layer.setResizingConstraint` API which allows you to configure how a layer should behave when a symbol is resized.
+
+```js
+module.exports = {
+  symbolLayerMiddleware: args => { ... }
+};
+```
+
+The following arguments are passed into your middleware function:
+- layer: the html-sketchapp layer instance
+- SVG: The SVG class for type checking of layer
+- Text: The Text class for type checking of layer
+- Rectangle: The Rectangle class for type checking of layer
+- ShapeGroup: The ShapeGroup class for type checking of layer
+- RESIZING_CONSTRAINTS: Object containing constants for the `setResizingConstraint` API
+
+For example, when handling SVGs differently from other layers:
+
+```js
+module.exports = {
+  symbolLayerMiddleware: (args) => {
+    const { layer, SVG, RESIZING_CONSTRAINTS } = args;
+
+    layer.setResizingConstraint(RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.TOP);
+
+    if(layer instanceof SVG) {
+      layer.setResizingConstraint(RESIZING_CONSTRAINTS.TOP, RESIZING_CONSTRAINTS.LEFT, RESIZING_CONSTRAINTS.WIDTH, RESIZING_CONSTRAINTS.HEIGHT);
+    }
+  }
+};
+
+```
+
+#### Symbol Middleware
+
+This middleware is executed for every symbol within a document.
+
+```js
+module.exports = {
+  symbolMiddleware: args => { ... }
+};
+```
+
+The following arguments are passed into your middleware function:
+- symbol: The current symbol master
+- node: The source HTML node
+- suffix: The symbol name suffix (e.g. `/Desktop`)
+- RESIZING_CONSTRAINTS: Object containing constants for the `setResizingConstraint` API
+
+
+#### Symbol Instance Middleware
+
+This middleware is executed for every symbol instance within a document.
+
+```js
+module.exports = {
+  symbolInstanceMiddleware: args => { ... }
+};
+```
+
+The following arguments are passed into your middleware function:
+- symbolInstance: The current symbol instance
+- symbolMaster: The symbol master that the symbol instance is referencing
+- node: The source HTML node
+- RESIZING_CONSTRAINTS: Object containing constants for the `setResizingConstraint` API
 
 ## Contributing
 
