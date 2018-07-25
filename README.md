@@ -20,16 +20,37 @@ $ html-sketchapp --file sketch.html --out-dir dist/sketch
 
 ## Install
 
-*Please note: html-sketchapp-cli targets the latest ["Active LTS" version](https://github.com/nodejs/Release#release-schedule) of Node. Older versions of Node are unsupported.*
+*Please note: html-sketchapp-cli requires [Node.js](https://nodejs.org/) and targets the latest ["Active LTS" version](https://github.com/nodejs/Release#release-schedule). Older versions of Node are unsupported.*
+
+If you're in a hurry and just want to try it out, you can install html-sketchapp-cli globally, along with html-sketchapp's Sketch plugin:
 
 ```bash
 $ npm install --global html-sketchapp-cli
+$ html-sketchapp install
 ```
 
-Then, install the Sketch plugin.
+However, when using html-sketchapp-cli in the context of a project, you should install it locally instead:
 
 ```bash
-$ html-sketchapp install
+$ npm install --save-dev html-sketchapp-cli
+```
+
+Then, add some scripts to your [package.json](https://docs.npmjs.com/files/package.json):
+
+```json
+{
+  "scripts": {
+    "html-sketchapp-install": "html-sketchapp install",
+    "html-sketchapp": "html-sketchapp [...args]"
+  }
+}
+```
+
+Once these scripts have been added, the following commands can be run within your project:
+
+```bash
+$ npm run html-sketchapp-install
+$ npm run html-sketchapp
 ```
 
 ## Page Setup
