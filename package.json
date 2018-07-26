@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/seek-oss/html-sketchapp-cli#readme",
   "dependencies": {
-    "@brainly/html-sketchapp": "^3.2.0",
+    "@brainly/html-sketchapp": "^4.0.0",
     "axios": "^0.18.0",
     "decompress": "^4.2.0",
     "es6-promisify": "^6.0.0",
