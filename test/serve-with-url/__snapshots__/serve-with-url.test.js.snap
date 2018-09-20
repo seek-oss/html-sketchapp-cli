@@ -9,10 +9,10 @@ Object {
       "colors": Array [
         Object {
           "_class": "color",
-          "alpha": 0,
+          "alpha": 1,
           "blue": 0,
           "green": 0,
-          "red": 0,
+          "red": 1,
         },
         Object {
           "_class": "color",
