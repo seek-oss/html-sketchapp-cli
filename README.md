@@ -211,6 +211,18 @@ $ html-sketchapp --puppeteer-args="--no-sandbox --disable-setuid-sandbox" --file
 
 *Note: Because Puppeteer args are prefixed with hyphens, you **must** use an equals sign and quotes when providing this option via the command line (as seen above).*
 
+### Puppeteer `waitUntil`
+
+By default, Puppeteer is configured to consider the page loaded when there are no more than 2 network connections for at least 500ms (`networkidle2`). This is so that html-sketchapp-cli can handle development environments with long-lived connections.
+
+If the page you're requesting has 2 or fewer resources that stall for longer than 500ms and doesn't complete loading, you can switch back to `networkidle0` via the `puppeteer-wait-until` argument:
+
+```bash
+$ html-sketchapp --puppeteer-wait-until networkidle0 --file sketch.html --out-dir dist
+```
+
+For the full list of available options for `waitUntil`, view the [Puppeteer `page.goto()` API documentation](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagegotourl-options).
+
 ### Chromium executable
 
 If you'd like to override the Chromium used by Puppeteer, you can provide a path to the executable with the `puppeteer-executable-path` option.
