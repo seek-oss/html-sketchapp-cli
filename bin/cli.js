@@ -75,6 +75,12 @@ require('yargs')
     'puppeteer-executable-path': {
       type: 'string',
       describe: 'Path to a Chromium executable to use instead of the one downloaded by Puppeteer.'
+    },
+    'puppeteer-wait-until': {
+      type: 'string',
+      describe: 'The Puppeteer navigation event to use before considering the page loaded.',
+      default: 'networkidle2',
+      choices: ['load', 'domcontentloaded', 'networkidle0', 'networkidle2']
     }
   }, async argv => {
     try {
@@ -106,7 +112,7 @@ require('yargs')
             page.on('console', msg => console.log('PAGE LOG:', msg.text()));
           }
 
-          await page.goto(symbolsUrl, { waitUntil: 'networkidle0' });
+          await page.goto(symbolsUrl, { waitUntil: argv.puppeteerWaitUntil });
 
           const bundle = await rollup({
             input: path.resolve(__dirname, '../script/generateAlmostSketch.js'),
