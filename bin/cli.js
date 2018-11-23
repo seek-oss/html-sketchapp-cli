@@ -129,7 +129,7 @@ require('yargs')
 
           await page.addScriptTag({ content: code });
 
-          await page.evaluate(`generateAlmostSketch.setupSymbols({ ${argv.name ? `id: ${argv.name}, ` : ''}name: "html-sketchapp symbols" })`);
+          await page.evaluate(`generateAlmostSketch.setupSymbols({ ${argv.name ? `id: '${argv.name}', ` : ''}name: "html-sketchapp symbols" })`);
 
           await page.evaluate('generateAlmostSketch.snapshotColorStyles()');
 
