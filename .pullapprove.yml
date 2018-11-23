@@ -1,16 +1,3 @@
-version: 2
-
-groups:
-  reviewers:
-    required: 1
-    teams:
-      - front-end-contributors
-    approve_by_comment:
-      enabled: false
-    always_rejected:
-      title_regex: '^(?!(build|ci|chore|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+\))?\:\s(\S+)).*$'
-      explanation: 'PR title must follow conventional commit message standards. Please read the contribution guide: https://github.com/seek-oss/html-sketchapp-cli/blob/master/CONTRIBUTING.md'
-    reset_on_push:
-      enabled: false
-    reset_on_reopened:
-      enabled: true
+# See https://www.pullapprove.com/docs/config/extends/
+version: 3
+extends: https://raw.githubusercontent.com/seek-oss/pullapprove-config-seek/master/.pullapprove.yml
