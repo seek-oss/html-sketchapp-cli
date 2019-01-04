@@ -95,6 +95,7 @@ require('yargs')
         const symbolLayerMiddleware = resolveMiddleware(argv.symbolLayerMiddleware);
         const symbolMiddleware = resolveMiddleware(argv.symbolMiddleware);
         const symbolInstanceMiddleware = resolveMiddleware(argv.symbolInstanceMiddleware);
+        const textMiddleware = resolveMiddleware(argv.textMiddleware);
 
         const launchArgs = {
             args: argv.puppeteerArgs ? argv.puppeteerArgs.split(' ') : [],
@@ -143,7 +144,7 @@ require('yargs')
               const deviceScaleFactor = typeof scale === 'undefined' ? 1 : parseFloat(scale);
               await page.setViewport({ width, height, deviceScaleFactor });
               await page.evaluate(`generateAlmostSketch.snapshotTextStyles({ ${argv.customIds ? 'customIds: true, ' : ''}suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
-              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolLayerMiddleware: ${symbolLayerMiddleware}, symbolMiddleware: ${symbolMiddleware}, symbolInstanceMiddleware: ${symbolInstanceMiddleware}  })`);
+              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolLayerMiddleware: ${symbolLayerMiddleware}, symbolMiddleware: ${symbolMiddleware}, symbolInstanceMiddleware: ${symbolInstanceMiddleware}, textMiddleware: ${textMiddleware} })`);
             }
           }
 

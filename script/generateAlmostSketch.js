@@ -12,7 +12,7 @@ const {
   ShapeGroup
 } = htmlSketchapp;
 
-const getAllLayers = (rootNode, symbolMastersByName = {}, symbolInstanceMiddleware = {}) => {
+const getAllLayers = (rootNode, symbolMastersByName = {}, symbolInstanceMiddleware = {}, textMiddleware = null) => {
   const rootNodeAndChildren = [rootNode, ...rootNode.querySelectorAll('*')];
 
   const symbolInstanceChildren = new Set([
@@ -42,7 +42,9 @@ const getAllLayers = (rootNode, symbolMastersByName = {}, symbolInstanceMiddlewa
       return [];
     }
 
-    return nodeToSketchLayers(node);
+    return nodeToSketchLayers(node, {
+      onTextGenerate: textMiddleware,
+    });
   });
 
   return layers.reduce((prev, current) => prev.concat(current), []);
@@ -80,7 +82,7 @@ export function snapshotTextStyles({ suffix = '', customIds }) {
 
 export function getDocumentJSON(name) {
   if (name) {
-    doc.setId(name);
+    doc.setObjectID(name);
   }
   return JSON.stringify(doc.toJSON());
 }
@@ -92,12 +94,12 @@ const page = new Page({
 
 export function setupSymbols({ name, id }) {
   if (id) {
-    page.setId(id);
+    page.setObjectID(id);
   }
   page.setName(name);
 }
 
-export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {}, symbolMiddleware = () => {}, symbolInstanceMiddleware = () => {} },) {
+export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {}, symbolMiddleware = () => {}, symbolInstanceMiddleware = () => {}, textMiddleware },) {
   const nodes = Array.from(document.querySelectorAll('[data-sketch-symbol]'));
 
   const symbolMastersByName = nodes.reduce((obj, node) => {
@@ -116,7 +118,7 @@ export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {},
     const name = node.dataset.sketchSymbol;
     const symbol = symbolMastersByName[name];
 
-    const layers = getAllLayers(node, symbolMastersByName, symbolInstanceMiddleware);
+    const layers = getAllLayers(node, symbolMastersByName, symbolInstanceMiddleware, textMiddleware);
 
     layers
       .filter(layer => layer !== null)
