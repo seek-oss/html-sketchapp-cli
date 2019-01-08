@@ -123,7 +123,7 @@ export function snapshotSymbols({ suffix = '', symbolLayerMiddleware = () => {},
     layers
       .filter(layer => layer !== null)
       .forEach(layer => {
-        symbolLayerMiddleware({layer, SVG, Text, ShapeGroup, Rectangle, RESIZING_CONSTRAINTS});
+        symbolLayerMiddleware({layer, node, SVG, Text, ShapeGroup, Rectangle, RESIZING_CONSTRAINTS});
         symbol.addLayer(layer);
       });
 
