@@ -10,7 +10,7 @@
     "html-sketchapp": "bin/cli.js"
   },
   "scripts": {
-    "lint": "eslint bin script/src test",
+    "lint": "eslint bin script test",
     "test": "npm run lint && jest",
     "commit": "git-cz",
     "commitmsg": "commitlint --edit --extends seek",
@@ -59,8 +59,8 @@
     "commitizen": "^2.9.6",
     "commitlint-config-seek": "^1.0.0",
     "cz-conventional-changelog": "^2.1.0",
-    "eslint": "^4.13.1",
-    "eslint-config-seek": "^3.0.0",
+    "eslint": "^5.12.0",
+    "eslint-config-seek": "^4.0.0",
     "husky": "^0.14.3",
     "jest": "^22.0.1",
     "semantic-release": "^15.1.3",
