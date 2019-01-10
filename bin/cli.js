@@ -95,6 +95,7 @@ require('yargs')
         const symbolLayerMiddleware = resolveMiddleware(argv.symbolLayerMiddleware);
         const symbolMiddleware = resolveMiddleware(argv.symbolMiddleware);
         const symbolInstanceMiddleware = resolveMiddleware(argv.symbolInstanceMiddleware);
+        const textMiddleware = resolveMiddleware(argv.textMiddleware);
 
         const launchArgs = {
             args: argv.puppeteerArgs ? argv.puppeteerArgs.split(' ') : [],
@@ -129,7 +130,7 @@ require('yargs')
 
           await page.addScriptTag({ content: code });
 
-          await page.evaluate('generateAlmostSketch.setupSymbols({ name: "html-sketchapp symbols" })');
+          await page.evaluate(`generateAlmostSketch.setupSymbols({ ${argv.name ? `id: '${argv.name}', ` : ''}name: "html-sketchapp symbols" })`);
 
           await page.evaluate('generateAlmostSketch.snapshotColorStyles()');
 
@@ -142,12 +143,12 @@ require('yargs')
               const [ width, height ] = size.split('x').map(x => parseInt(x, 10));
               const deviceScaleFactor = typeof scale === 'undefined' ? 1 : parseFloat(scale);
               await page.setViewport({ width, height, deviceScaleFactor });
-              await page.evaluate(`generateAlmostSketch.snapshotTextStyles({ suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
-              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolLayerMiddleware: ${symbolLayerMiddleware}, symbolMiddleware: ${symbolMiddleware}, symbolInstanceMiddleware: ${symbolInstanceMiddleware}  })`);
+              await page.evaluate(`generateAlmostSketch.snapshotTextStyles({ ${argv.customIds ? 'customIds: true, ' : ''}suffix: "${hasViewports ? `/${viewportName}` : ''}" })`);
+              await page.evaluate(`generateAlmostSketch.snapshotSymbols({ suffix: "${hasViewports ? `/${viewportName}` : ''}", symbolLayerMiddleware: ${symbolLayerMiddleware}, symbolMiddleware: ${symbolMiddleware}, symbolInstanceMiddleware: ${symbolInstanceMiddleware}, textMiddleware: ${textMiddleware} })`);
             }
           }
 
-          const asketchDocumentJSON = await page.evaluate('generateAlmostSketch.getDocumentJSON()');
+          const asketchDocumentJSON = await page.evaluate(`generateAlmostSketch.getDocumentJSON('${argv.name || ''}')`);
           const asketchPageJSON = await page.evaluate('generateAlmostSketch.getPageJSON()');
 
           const outputPath = path.resolve(process.cwd(), argv.outDir);

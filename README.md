@@ -310,6 +310,35 @@ The following arguments are passed into your middleware function:
 - suffix: The symbol name suffix (e.g. `/Desktop`)
 - RESIZING_CONSTRAINTS: Object containing constants for the `setResizingConstraint` API
 
+#### Text Middleware
+
+This middleware is executed for every text layer within a document.
+
+```js
+module.exports = {
+  textMiddleware: args => { ... }
+};
+```
+
+The following arguments are passed into your middleware function:
+
+- layer: The current symbol layer
+- node: The source HTML node
+
+Example for preserving text across library updates (by hardcoding an ID):
+
+```js
+textMiddleware: ({ layer, node }) => {
+  const parentNode = node.parentNode;
+  if (parentNode && parentNode.dataset) {
+    const { sketchId } = parentNode.dataset;
+
+    if (sketchId) {
+      layer.setObjectID(`text:${sketchId}`);
+    }
+  }
+}
+```
 
 #### Symbol Instance Middleware
 
