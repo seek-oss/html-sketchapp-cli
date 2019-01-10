@@ -10,7 +10,7 @@
     "html-sketchapp": "bin/cli.js"
   },
   "scripts": {
-    "lint": "eslint bin script/src test",
+    "lint": "eslint bin script test",
     "test": "npm run lint && jest",
     "commit": "git-cz",
     "commitmsg": "commitlint --edit --extends seek",
