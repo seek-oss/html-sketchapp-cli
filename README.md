@@ -154,7 +154,8 @@ module.exports = {
     Mobile: '320x568'
   },
   puppeteerArgs: '--no-sandbox --disable-setuid-sandbox',
-  puppeteerExecutablePath: 'google-chrome-unstable'
+  puppeteerExecutablePath: 'google-chrome-unstable',
+  pupperteerUserDataDir: '/home/corn/.config/google-chrome/Default' // https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#puppeteerdefaultargsoptions
 };
 ```
 

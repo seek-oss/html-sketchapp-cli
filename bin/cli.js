@@ -76,6 +76,10 @@ require('yargs')
       type: 'string',
       describe: 'Path to a Chromium executable to use instead of the one downloaded by Puppeteer.'
     },
+    'puppeteer-user-data-dir': {
+      type: 'string',
+      describe: 'Path to a Chromium User Data directory to use instead of the blank temporary one used by Puppeteer.'
+    },
     'puppeteer-wait-until': {
       type: 'string',
       describe: 'The Puppeteer navigation event to use before considering the page loaded.',
@@ -99,7 +103,8 @@ require('yargs')
         const launchArgs = {
             args: argv.puppeteerArgs ? argv.puppeteerArgs.split(' ') : [],
             executablePath: argv.puppeteerExecutablePath,
-            headless: !debug
+            headless: !debug,
+            userDataDir: argv.puppeteerUserDataDir
         };
 
         const browser = await puppeteer.launch(launchArgs);
